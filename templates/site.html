@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleControl.css') }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://cdn.prod.website-files.com/626c0a10a6164428fc66540f/6285040d98fe62f3e7ddb8cf_Eden-Logo-32x32%20(1).png">
+
+    <!-- External JS Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Local JS -->
+    <script src="{{ url_for('static', filename='js/autoScript.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/modules/plotting.js') }}" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <img src="/static/images/logo.png" alt="Logo" class="logo">
+            <div class="button-container">
+                <button class="button go-button" onclick="sendCommand('go')">GO</button>
+                <button class="button stop-button" onclick="sendCommand('stop')">STOP</button>
+            </div>
+            <!-- Arming Code Input -->
+            <div class="arming-code-container_Auto">
+                <label for="armingCode">Arming Code:</label>
+                <input type="password" id="armingCode" name="armingCode">
+            </div>
+        </div>
+        <div class="right-panel">
+            <h2>Presets:</h2>
+            <div class="presets">
+                <div class="preset-item"><span>Altitude (ft)</span> <input type="number" id="altitude"></div>
+                <div class="preset-item"><span>Voltage (kV)</span> <input type="number" id="voltage"></div>
+                <div class="preset-item"><span># Pulses</span> <input type="number" id="pulses"></div>
+                <div class="divider"></div>
+                <div class="preset-item"><span>Pressure Offset (psi)</span> <input type="number" id="pressureOffset"></div>
+                <div class="preset-item"><span>Current Pressure (psi)</span> <div class="non-editable-box" id="pressureCurr">{{ pressureCurr }}</div></div>
+                <div class="preset-item"><span>Purge Time (s)</span> <input type="number" id="purgeTime"></div>
+                <button class="flow-button" onclick="sendCommand('flow')">Flow 5'</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="state-indicators-section">
+        <h2>State Indicators</h2>
+        <div class="state-indicators">
+            <div class="state-item">Dump 
+                <div class="non-editable-box">
+                    <img id="dumpStateImg" class="state-icon">
+                </div>
+            </div>
+            <div class="state-item">Charge 
+                <div class="non-editable-box">
+                    <img id="chargeStateImg" class="state-icon">
+                </div>
+            </div>
+            <div class="state-item">HV Toggle 
+                <div class="non-editable-box">
+                    <img id="hvStateImg" class="state-icon">
+                </div>
+            </div>
+            <div class="state-item">Pressure 
+                <div class="non-editable-box">
+                    <img id="pressureStateImg" class="state-icon">
+                </div>
+            </div>
+            <div class="state-item">Trigger 
+                <div class="non-editable-box" id="triggerCountdown">{{ triggerCountdown }}</div>
+            </div>
+            <div class="state-item"># Pulses Complete 
+                <div class="non-editable-box" id="pulseCounter">{{ pulseCounter }}</div>
+            </div>
+        </div>
+
+        <!-- New Centered Safety Indicator -->
+        <div class="centered-indicator">
+            <div class="state-item">Safety Status 
+                <div class="non-editable-box">
+                    <img id="safetyStateImg" class="state-icon">
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="data-wrapper">
+            <div id="dataReadout" class="dataReadout">
+                Voltage: <span id="voltageReadout">--</span> kV |
+                Current: <span id="currentReadout">--</span> mA |
+                <label>
+                    <input type="checkbox" id="plotToggle" checked> Plotting
+                </label>
+            </div>
+            <div id="plot-container">
+                <canvas id="realtimePlot"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="testIDModal" class="modal">
+      <div class="modal-content">
+        <label for="testIDInput">Please enter test ID:</label>
+        <input type="text" id="testIDInput">
+        <button id="submitTestID">Submit</button>
+      </div>
+    </div>
+
+    <div class="console-log-wrapper">
+        <button onclick="new_testID()" id="newTestIDBtn">Log New Test ID</button>
+        <div id="console-log" class="console-log"></div>
+    </div>
+
+
+    <!-- Link to Manual Control -->
+    <a onclick="navigateWithWarning('/manual')" class="controlMode">Manual Control</a>
+    <a onclick="navigateWithWarning('/logs')" class="logsLink" target="_blank" rel="noopener noreferrer">Logs</a>
+    <a onclick="navigateWithWarning('/settings')" class="settingsLink">Settings</a>
+
+</body>
+</html>
