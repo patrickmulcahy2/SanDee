@@ -11,28 +11,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //Rho Gains
     if (settingsPID.kp_Rho !== undefined) {
-        document.getElementById("kp-rho").value = settingsData.kp_Rho;
+        document.getElementById("kp-rho").value = settingsPID.kp_Rho;
     }
 
     if (settingsPID.ki_Rho !== undefined) {
-        document.getElementById("ki-rho").value = settingsData.ki_Rho;
+        document.getElementById("ki-rho").value = settingsPID.ki_Rho;
     }
 
     if (settingsPID.kd_Rho !== undefined) {
-        document.getElementById("kd-rho").value = settingsData.kd_Rho;
+        document.getElementById("kd-rho").value = settingsPID.kd_Rho;
     }
 
     //Theta  Gains
     if (settingsPID.kp_Theta !== undefined) {
-        document.getElementById("kp-theta").value = settingsData.kp_Theta;
+        document.getElementById("kp-theta").value = settingsPID.kp_Theta;
     }
 
     if (settingsPID.ki_Theta !== undefined) {
-        document.getElementById("ki-theta").value = settingsData.ki_Theta;
+        document.getElementById("ki-theta").value = settingsPID.ki_Theta;
     }
 
     if (settingsPID.kd_Theta !== undefined) {
-        document.getElementById("kd-theta").value = settingsData.kd_Theta;
+        document.getElementById("kd-theta").value = settingsPID.kd_Theta;
     }
 
 
