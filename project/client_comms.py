@@ -13,7 +13,7 @@ def update_client():
 
 
 def init_comms_handlers():
-    @socketio.on("updatePresets")
+    @socketio.on('updatePresets')
     def updatePresets(data):
         global templateData
         # Update templateData with received values
