@@ -2,14 +2,11 @@ from flask import Flask, render_template, request, Response, send_from_directory
 import threading 
 from threading import Lock
 
-from .console_logging import init_log_handlers
 from .settings import init_settings_handlers, retrieve_settings_save
 from .utilities import init_utility_handlers
-from .client_comms import init_comms_handlers
-from .background_tasks import updateData, safetyCheck, pressureVoltageSet, pressureVoltageCurrentRead
-from .manual_control import init_manualControl_handlers
+from .background_tasks import updateData, encoderTracking, controlLoop
 from .config import templateData, app, socketio
-from .control_commands import init_controlCommands_handlers, stop
+#from .control_commands import init_controlCommands_handlers, stop
 
 
 thread = None
@@ -38,28 +35,23 @@ def connect():
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(updateData)
-            socketio.start_background_task(safetyCheck)
+            socketio.start_background_task(encoderTracking)
+            socketio.start_background_task(controlLoop)
 
 @socketio.on("disconnect")
 def disconnect():
     sid = request.sid
     connected_clients.discard(sid)
     print(f"Client disconnected: {sid}")
-    if not connected_clients:
-        print("All clients disconnected. Stopping system.")
-        stop()
-
 
 
 #####################################
 ########## CONTROL ROUTES ###########
 #####################################
-@app.route('/')
+@app.route('/auto')
 def automatedControl():
-    templateData["armingCode"] = ""
     return render_template('automatedControl.html')
 
-@app.route('/manual')
+@app.route('/')
 def manualControl():
-    templateData["armingCode"] = ""
     return render_template('manualControl.html')

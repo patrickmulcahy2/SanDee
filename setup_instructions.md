@@ -1,11 +1,22 @@
 ## Install SanDee in ~ directory
 cd ~
 rm -f -r SanDee
-git clone XXXXXXXXXXXX
+git clone https://github.com/patrickmulcahy2/SanDee
+
 
 ### Make system run on startup
 crontab -e
 @reboot sleep 30 && python3 ~/SanDee/run.py
+
+
+### Set up Virtual Environment
+sudo apt update
+sudo apt install python3-venv
+cd ~
+python3 -m venv myenv
+source myenv/bin/activate
+(to deactivate)
+deactivate
 
 
 ### install other packages
@@ -18,8 +29,11 @@ sudo raspi-config
 --> Interfaces 
 --> Enable
 
-### Wifi auto connect priority
 
+### Wifi auto connect priority
+xyz
+xyz
+xyz
 
 
 ### To kill program started on boot

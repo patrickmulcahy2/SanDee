@@ -11,37 +11,55 @@ app = Flask(__name__,
             static_folder=os.path.join(BASE_DIR, 'static'))
 
 socketio = SocketIO(app, cors_allowed_origins='*')
-app.secret_key = "SanDee"
+app.secret_key = "pfm"
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=15)
 
 
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
-
-class stopCheck:
-    value = True
 
 IO_pins = {
     # Relay GPIOs 
-    "DUMP_PIN": 13,
+    "rho_pos": 29,
+    "rho_neg": 31,
+    "theta_pos": 33,
+    "theta_neg": 35,
 }
 
 
-ARMING_CODE_MANUAL = "eyebreakrocks"
-
 # Output pin setups
-GPIO.setup(IO_pins["DUMP_PIN"], GPIO.OUT)   
-
+GPIO.setup(IO_pins["rho_pos"], GPIO.OUT)   
+GPIO.setup(IO_pins["rho_neg"], GPIO.OUT)   
+GPIO.setup(IO_pins["theta_pos"], GPIO.OUT)   
+GPIO.setup(IO_pins["theta_neg"], GPIO.OUT)   
 
 # Initialize GPIO states
-GPIO.output(IO_pins["DUMP_PIN"], GPIO.HIGH)
+GPIO.output(IO_pins["rho_pos"], GPIO.LOW)
+GPIO.output(IO_pins["rho_neg"], GPIO.LOW)
+GPIO.output(IO_pins["theta_pos"], GPIO.LOW)
+GPIO.output(IO_pins["theta_neg"], GPIO.LOW)
 
 
 #Define default states and settings (user inputs)
-settingsData = {
-    'chargeTimeout': 10,    # Seconds
+settingsPID = {
+    'P_Rho': 1,
+    'I_Rho': 1,
+    'D_Rho': 1,
+    'P_Theta': 1,
+    'I_Theta': 1,
+    'D_Theta': 1, 
 }
 
-templateData = {
-    'altitudeCurr': 0,          #ft
+settingsData = {
+    'feedrate': 5,          #inch per second
+}
+
+currPosition = {
+    'rhoCurr': 0,          #inches
+    'thetaCurr': 0         #degrees
+}
+
+reqPosition = {
+    'rhoReq': 0,          #inches
+    'thetaReq': 0         #degrees
 }
