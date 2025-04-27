@@ -4,6 +4,7 @@ from threading import Lock
 
 from .settings import init_settings_handlers, retrieve_settings_save
 from .utils import init_utils_handlers
+from .client_comms import init_comms_handlers
 from .background_tasks import updateData, encoderTracking, controlLoop
 from .config import app, socketio
 from .control_commands import init_controlCommands_handlers
