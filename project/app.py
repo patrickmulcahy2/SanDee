@@ -12,12 +12,11 @@ from .config import app, socketio
 thread = None
 thread_lock = Lock()
 
-init_log_handlers()
 init_settings_handlers()
-init_utility_handlers()
-init_comms_handlers()
-init_controlCommands_handlers()
-init_manualControl_handlers()
+# init_utility_handlers()
+# init_comms_handlers()
+# init_controlCommands_handlers()
+# init_manualControl_handlers()
 
 ##############################################
 ############# CLIENT HANDLERS ################
