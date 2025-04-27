@@ -4,9 +4,8 @@ import subprocess
 
 from flask import render_template, request, redirect, url_for, session, jsonify
 
-from .config import templateData, settingsData, app, socketio
-from .client_comms import update_client
-from .utilities import sparkGapPressureCalc
+from .config import settingsData, app, socketio
+#from .utilities import sparkGapPressureCalc
 
 
 # Create a config parser instance
