@@ -21,7 +21,7 @@ def init_settings_handlers():
     def new_settings(data):
         global settingsData
 
-        settingsData['chargeTimeout'] = float(data.get("feedrate"), 5)
+        settingsData['chargeTimeout'] = float(data.get("feedrate", 5))
 
         settingsPID['kp_Rho'] = float(data.get("kp_Rho", 1.00 ))
         settingsPID['ki_Rho'] = float(data.get("ki_Rho", 0.10))
@@ -49,7 +49,7 @@ def retrieve_settings_save():
 
     if 'Settings' in configParser:
         s = configParser['Settings']
-        settingsData['feedrate'] = float(s.get("feedrate"), 5)
+        settingsData['feedrate'] = float(s.get("feedrate", 5))
 
 
         settingsPID['kp_Rho'] = float(s.get("kp_Rho", 1.00 ))
