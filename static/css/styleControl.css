@@ -1,0 +1,147 @@
+/* styleControl.css - Minimalist Industrial */
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f2f2f2;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden; /* No scrollbars unless necessary */
+}
+
+.container {
+    display: flex;
+    height: calc(100vh - 200px); /* make it shorter to fit other sections */
+}
+
+.left-panel {
+    width: 250px;
+    background-color: #2c3e50;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    width: 80%;
+    margin-bottom: 30px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button {
+    padding: 15px;
+    width: 100%;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    background-color: #3498db;
+    transition: background-color 0.2s;
+}
+
+.button:hover {
+    background-color: #2980b9;
+}
+
+.go-button { background-color: #27ae60; }
+.pause-button { background-color: #f39c12; }
+.clear-button { background-color: #e74c3c; }
+
+.right-panel {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.preset-item {
+    margin-bottom: 15px;
+}
+
+input[type="number"] {
+    padding: 8px;
+    width: 100px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.state-indicators-section {
+    padding: 20px;
+    background-color: #ecf0f1;
+    flex-shrink: 0; 
+    overflow-y: auto;
+}
+
+.state-item {
+    margin-bottom: 20px;
+}
+
+.non-editable-box {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 100px;
+    text-align: center;
+}
+
+.centered-indicator {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.controlMode {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+}
+
+.controlMode:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.settingsLink {
+    position: fixed;
+    bottom: 10px;
+    right: 145px;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+}
+
+.settingsLink:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+#tracking-circle {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vh; /* 50% of the viewport height */
+    height: 50vh;
+    background-color: rgba(0, 0, 255, 0.1); /* Light blue for visibility */
+    border: 2px solid blue;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 1000; /* Make sure it’s above most elements */
+}

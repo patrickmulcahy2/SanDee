@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleSettings.css') }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://cdn.prod.website-files.com/626c0a10a6164428fc66540f/6285040d98fe62f3e7ddb8cf_Eden-Logo-32x32%20(1).png">
+
+    <!-- External JS Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Local JS -->
+    <script src="{{ url_for('static', filename='js/settingsScript.js') }}" defer></script>
+
+    <!-- Pass settings data to JS -->
+    <script>
+        window.settingsData = {{ settingsData | tojson }};
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <img src="/static/images/logo.png" alt="Eden Logo" class="logo">
+        </div>
+
+        <div class="right-panel">
+            <h2>System Settings</h2>
+            <div class="settings-container">
+
+                <!-- Supply Settings -->
+                <h3>Supply Settings</h3>
+                <div class="setting-item">
+                    <label for="supply-voltage">HV Supply Max Voltage (kV):</label>
+                    <input type="number" id="supply-voltage">
+                </div>
+
+                <div class="setting-item">
+                    <label for="supply-power">HV Supply Rated Power (W):</label>
+                    <input type="number" id="supply-power">
+                </div>
+
+                <!-- Misc Settings -->
+                <h3>Plot Settings</h3>
+                <div class="setting-item">
+                    <label for="plot-sample-rate">Plot Sample Rate (Hz):</label>
+                    <input type="number" id="plot-sample-rate">
+                </div>
+
+                <div class="setting-item">
+                    <label for="plot-length">Plot Length (S):</label>
+                    <input type="number" id="plot-length">
+                </div>
+
+                <!-- Misc Settings -->
+                <h3>Misc Settings</h3>
+                <div class="setting-item">
+                    <label for="timeout">Charge Timeout Delay (s):</label>
+                    <input type="number" id="timeout">
+                </div>
+
+                <!-- Pressure Equation -->
+                <div class="setting-item">
+                    <label>Pressure Equation:</label>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span>PSI =</span>
+                        <input type="number" id="pressure-multiplier" style="width: 100px;">
+                        <span>* kV -</span>
+                        <input type="number" id="pressure-offset" style="width: 100px;">
+                    </div>
+                </div>
+
+                <!-- Charge Time Equation -->
+                <div class="setting-item">
+                    <label>Charge Estimate Equation:</label>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span>Seconds =</span>
+                        <input type="number" id="charge-multiplier" style="width: 100px;">
+                        <span> * kV / W +</span>
+                        <input type="number" id="charge-offset" style="width: 100px;">
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-container">
+                    <button class="button save-button">Save</button>
+                    <button class="button cancel-button">Cancel</button>
+                </div>
+            </div>
+
+            <div class="status-message" id="status-message"></div>
+
+            <div class="nav-links">
+                <a class="pageLink" href="/">Control</a>
+                <a class="pageLink" onclick="reboot()" target="_blank" rel="noopener noreferrer">Reboot</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

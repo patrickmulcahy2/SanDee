@@ -39,8 +39,6 @@ def connect():
         if thread is None:
             thread = socketio.start_background_task(updateData)
             socketio.start_background_task(safetyCheck)
-            socketio.start_background_task(pressureVoltageSet)
-            socketio.start_background_task(pressureVoltageCurrentRead)
 
 @socketio.on("disconnect")
 def disconnect():

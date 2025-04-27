@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - System Settings</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleLogin.css') }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://cdn.prod.website-files.com/626c0a10a6164428fc66540f/6285040d98fe62f3e7ddb8cf_Eden-Logo-32x32%20(1).png">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Login to Access Settings</h2>
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+            <form method="post">
+                <input type="password" name="password" placeholder="Enter password" required>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
