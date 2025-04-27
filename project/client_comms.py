@@ -1,6 +1,6 @@
 from flask_socketio import SocketIO
 
-from .config import userInputs, currPosition, reqPosition socketio
+from .config import userInputs, currPosition, reqPosition, socketio
 from .utilities import sparkGapPressureCalc, pressureAltAdjCalc
 
 
