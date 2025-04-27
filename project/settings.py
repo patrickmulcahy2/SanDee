@@ -5,6 +5,7 @@ import subprocess
 from flask import render_template, request, redirect, url_for, session, jsonify
 
 from .config import settingsData, settingsPID, app, socketio
+from .client_comms import update_client
 
 # Create a config parser instance
 configParser = configparser.ConfigParser()
