@@ -24,6 +24,10 @@ IO_pins = {
     "rho_neg": 31,
     "theta_pos": 33,
     "theta_neg": 35,
+    "encoder_rho_A": 32,
+    "encoder_rho_B": 36,
+    "encoder_theta_A": 38,
+    "encoder_theta_B": 40,
 }
 
 
@@ -32,6 +36,10 @@ GPIO.setup(IO_pins["rho_pos"], GPIO.OUT)
 GPIO.setup(IO_pins["rho_neg"], GPIO.OUT)   
 GPIO.setup(IO_pins["theta_pos"], GPIO.OUT)   
 GPIO.setup(IO_pins["theta_neg"], GPIO.OUT)   
+GPIO.setup(IO_pins["encoder_rho_A"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(IO_pins["encoder_rho_B"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(IO_pins["encoder_theta_A"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(IO_pins["encoder_theta_B"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # Initialize GPIO states
 GPIO.output(IO_pins["rho_pos"], GPIO.LOW)
@@ -40,18 +48,23 @@ GPIO.output(IO_pins["theta_pos"], GPIO.LOW)
 GPIO.output(IO_pins["theta_neg"], GPIO.LOW)
 
 
+
 #Define default states and settings (user inputs)
 settingsPID = {
-    'P_Rho': 1,
-    'I_Rho': 1,
-    'D_Rho': 1,
-    'P_Theta': 1,
-    'I_Theta': 1,
-    'D_Theta': 1, 
+    'kp_Rho': 1.00,
+    'ki_Rho': 0.10,
+    'kd_Rho': 0.01,
+    'kp_Theta': 1.00,
+    'ki_Theta': 0.10,
+    'kd_Theta': 0.01, 
 }
 
 settingsData = {
     'feedrate': 5,          #inch per second
+}
+
+userInputs = {
+    'feedrateOffset': 0,    #inch per second
 }
 
 currPosition = {

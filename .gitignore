@@ -1,0 +1,65 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+*.so
+*.egg-info/
+
+# Virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# Flask specific
+instance/
+.webassets-cache/
+
+# Database
+*.db
+*.sqlite3
+*.sqlite
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE/editor folders and files
+.idea/
+.vscode/
+*.swp
+
+# PyCharm
+*.iml
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# pytest
+.cache/
+
+# Coverage reports
+.coverage
+*.coveragerc
+*.hypothesis/
+
+# Flask-SocketIO
+socketio/
+
+# Flask's default upload folder
+uploads/
+
+# Config files
+*.env
+
+# Docker
+*.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Application secrets (use .env or similar for sensitive data)
+*.env
