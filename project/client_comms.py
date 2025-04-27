@@ -1,7 +1,6 @@
 from flask_socketio import SocketIO
 
 from .config import userInputs, currPosition, reqPosition, socketio
-from .utilities import sparkGapPressureCalc, pressureAltAdjCalc
 
 
 def update_client():
@@ -15,9 +14,9 @@ def update_client():
 def init_comms_handlers():
     @socketio.on('updatePresets')
     def updatePresets(data):
-        global templateData
+        global userInputs
         # Update templateData with received values
-        templateData['feedrate'] = int(data.get("feedrate", 0))
+        userInputs['feedrate'] = int(data.get("feedrate", 0))
 
         # Emit updated data to all clients
         update_client()
