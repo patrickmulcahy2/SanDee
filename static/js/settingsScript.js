@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Access the settings data passed from the server
     const settingsData = window.settingsData || {};
+    const settingsPID = window.settingsPID || {};
+
 
     // Populate form fields
     if (settingsData.feedrate !== undefined) {
