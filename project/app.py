@@ -3,7 +3,7 @@ import threading
 from threading import Lock
 
 from .settings import init_settings_handlers, retrieve_settings_save
-from .utilities import init_utility_handlers
+#from .utilities import init_utility_handlers
 #from .background_tasks import updateData, encoderTracking, controlLoop
 from .config import app, socketio
 #from .control_commands import init_controlCommands_handlers, stop
