@@ -27,3 +27,5 @@ def encoderTracking():
 
 def controlLoop(): 
     while True:
+        pass
+        
