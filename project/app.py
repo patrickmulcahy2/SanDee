@@ -8,6 +8,7 @@ from .client_comms import init_comms_handlers
 from .background_tasks import updateData, encoderTracking, controlLoop
 from .config import app, socketio
 from .control_commands import init_controlCommands_handlers
+from .manual_control import init_manualControl_handlers
 
 
 thread = None
