@@ -4,7 +4,7 @@ import subprocess
 
 from flask import render_template, request, redirect, url_for, session, jsonify
 
-from .config import settingsData, app, socketio
+from .config import settingsData, settingsPID, app, socketio
 #from .utilities import sparkGapPressureCalc
 
 
@@ -14,6 +14,7 @@ configParser = configparser.ConfigParser()
 # Path to the settings file
 settings_file_path = os.path.join(os.path.dirname(__file__), "settings.cfg")
 
+
 ################################################
 ########## SETTINGS SOCKET HANDLERS ############
 ################################################
@@ -22,17 +23,8 @@ def init_settings_handlers():
     def new_settings(data):
         global settingsData
 
-        settingsData['chargeTimeout'] = int(data.get("chargeTimeout", 0))
-        settingsData['supplyVoltage'] = int(data.get("supplyVoltage", 0))
-        settingsData['supplyWattage'] = int(data.get("supplyWattage", 0))
-        settingsData['supplyCurrent'] = (settingsData['supplyWattage'] / settingsData['supplyVoltage'])
-        settingsData['plotSampleRate'] = int(data.get("plotSampleRate", 0))
-        settingsData['plotLength'] = int(data.get("plotLength", 0))
-        settingsData['pressureMultiplier'] = float(data.get("pressureMultiplier", 0))
-        settingsData['pressureOffset'] = float(data.get("pressureOffset", 0))
+        settingsData['chargeTimeout'] = int(data.get("feedrate"), 5)
 
-
-        templateData['currPressureGauge'] = sparkGapPressureCalc(templateData['vSetpoint'] + templateData["pressureOffset"])
         update_client()
         update_settings_save()
 
@@ -52,14 +44,16 @@ def retrieve_settings_save():
 
     if 'Settings' in configParser:
         s = configParser['Settings']
-        settingsData['chargeTimeout'] = int(s.get("chargeTimeout", 10))
-        settingsData['supplyVoltage'] = int(s.get("supplyVoltage", 100))
-        settingsData['supplyWattage'] = int(s.get("supplyWattage", 600))
-        settingsData['plotSampleRate'] = int(s.get("plotSampleRate", 8))
-        settingsData['plotLength'] = int(s.get("plotLength", 20))
-        settingsData['supplyCurrent'] = settingsData['supplyWattage'] / settingsData['supplyVoltage']
-        settingsData['pressureMultiplier'] = float(s.get("pressureMultiplier", 0.977706))
-        settingsData['pressureOffset'] = float(s.get("pressureOffset", 17.3008))
+        settingsData['feedrate'] = int(s.get("feedrate"), 5)
+
+
+        settingsPID['kp_Rho'] = int(s.get("kp_Rho"), 1.00)
+        settingsPID['ki_Rho'] = int(s.get("ki_Rho"), 0.10)
+        settingsPID['kd_Rho'] = int(s.get("kd_Rho"), 0.01)
+        settingsPID['kp_Theta'] = int(s.get("kp_Theta"), 1.00)
+        settingsPID['ki_Theta'] = int(s.get("ki_Theta"), 0.10)
+        settingsPID['kd_Theta'] = int(s.get("kd_Theta"), 0.01)
+
     else:
         print("Settings section not found in file.")
 
@@ -68,14 +62,14 @@ def update_settings_save():
         configParser['Settings'] = {}
 
     s = configParser['Settings']
-    s["chargeTimeout"] = str(settingsData['chargeTimeout'])
-    s["supplyVoltage"] = str(settingsData['supplyVoltage'])
-    s["supplyWattage"] = str(settingsData['supplyWattage'])
-    s["plotSampleRate"] = str(settingsData['plotSampleRate'])
-    s["plotLength"] = str(settingsData['plotLength'])
-    s["pressureMultiplier"] = str(settingsData['pressureMultiplier'])
-    s["pressureOffset"] = str(settingsData['pressureOffset'])
+    s["feedrate"] = str(settingsData['feedrate'])
 
+    s["kp_Rho"] = str(settingsPID['kp_Rho'])
+    s["ki_Rho"] = str(settingsPID['ki_Rho'])
+    s["kd_Rho"] = str(settingsPID['kd_Rho'])
+    s["kp_Theta"] = str(settingsPID['kp_Theta'])
+    s["ki_Theta"] = str(settingsPID['ki_Theta'])
+    s["kd_Theta"] = str(settingsPID['kd_Theta'])
 
     with open(settings_file_path, 'w') as configfile:
         configParser.write(configfile)
@@ -88,7 +82,7 @@ def update_settings_save():
 def settings():
     if not session.get("authenticated"):
         return redirect(url_for("login"))
-    return render_template("settings.html", settingsData=settingsData)
+    return render_template("settings.html", settingsData=settingsData, settingsPID=settingsPID)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

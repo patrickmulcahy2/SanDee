@@ -22,6 +22,7 @@
     <!-- Pass settings data to JS -->
     <script>
         window.settingsData = {{ settingsData | tojson }};
+        window.settingsPID = {{ settingsPID | tojson }};
     </script>
 </head>
 
@@ -59,38 +60,32 @@
                     <input type="number" id="plot-length">
                 </div>
 
-                <!-- Misc Settings -->
-                <h3>Misc Settings</h3>
-                <div class="setting-item">
-                    <label for="timeout">Charge Timeout Delay (s):</label>
-                    <input type="number" id="timeout">
-                </div>
-
-                <!-- Pressure Equation -->
-                <div class="setting-item">
-                    <label>Pressure Equation:</label>
-                    <div style="display: flex; align-items: center; gap: 5px;">
-                        <span>PSI =</span>
-                        <input type="number" id="pressure-multiplier" style="width: 100px;">
-                        <span>* kV -</span>
-                        <input type="number" id="pressure-offset" style="width: 100px;">
+                <div class="pid-gains">
+                    <!-- Rho Gains Section -->
+                    <div class="gain-section">
+                        <h3>Rho Gains</h3>
+                        <div class="gain-inputs">
+                            <input type="number" id="kp-rho">
+                            <input type="number" id="ki-rho">
+                            <input type="number" id="kd-rho">
+                        </div>
                     </div>
-                </div>
 
-                <!-- Charge Time Equation -->
-                <div class="setting-item">
-                    <label>Charge Estimate Equation:</label>
-                    <div style="display: flex; align-items: center; gap: 5px;">
-                        <span>Seconds =</span>
-                        <input type="number" id="charge-multiplier" style="width: 100px;">
-                        <span> * kV / W +</span>
-                        <input type="number" id="charge-offset" style="width: 100px;">
+                    <!-- Theta Gains Section -->
+                    <div class="gain-section">
+                        <h3>Theta Gains</h3>
+                        <div class="gain-inputs">
+                            <input type="number" id="kp-theta">
+                            <input type="number" id="ki-theta">
+                            <input type="number" id="kd-theta">
+                        </div>
                     </div>
                 </div>
 
                 <!-- Buttons -->
                 <div class="button-container">
                     <button class="button save-button">Save</button>
+                    <button class="button PID-button">Tune PID</button>
                     <button class="button cancel-button">Cancel</button>
                 </div>
             </div>
