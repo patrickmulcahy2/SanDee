@@ -1,7 +1,7 @@
 
 
 
-from .config import settingsData, app, socketio
+from .config import app, socketio
 
 
 def init_controlCommands_handlers():
