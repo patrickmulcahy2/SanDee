@@ -115,6 +115,7 @@ input[type="number"] {
     background: rgba(0, 0, 0, 0.9);
 }
 
+
 .settingsLink {
     position: fixed;
     bottom: 10px;
@@ -136,12 +137,13 @@ input[type="number"] {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50vh; /* 50% of the viewport height */
-    height: 50vh;
+    transform: translate(-20%, -75%);
+    width: 60vh; /* 50% of the viewport height */
+    height: 60vh;
     background-color: rgba(0, 0, 255, 0.1); /* Light blue for visibility */
     border: 2px solid blue;
     border-radius: 50%;
     overflow: hidden;
     z-index: 1000; /* Make sure it’s above most elements */
+    cursor: url('static/images/circle-cursor.png'), auto; /* Custom cursor */
 }
