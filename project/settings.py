@@ -23,12 +23,12 @@ def init_settings_handlers():
 
         settingsData['chargeTimeout'] = int(data.get("feedrate"), 5)
 
-        settingsPID['kp_Rho'] = int(data.get("kp_Rho", 1.00 ))
-        settingsPID['ki_Rho'] = int(data.get("ki_Rho", 0.10))
-        settingsPID['kd_Rho'] = int(data.get("kd_Rho", 0.01))
-        settingsPID['kp_Theta'] = int(data.get("kp_Theta", 1.00))
-        settingsPID['ki_Theta'] = int(data.get("ki_Theta", 0.10))
-        settingsPID['kd_Theta'] = int(data.get("kd_Theta", 0.01))
+        settingsPID['kp_Rho'] = float(data.get("kp_Rho", 1.00 ))
+        settingsPID['ki_Rho'] = float(data.get("ki_Rho", 0.10))
+        settingsPID['kd_Rho'] = float(data.get("kd_Rho", 0.01))
+        settingsPID['kp_Theta'] = float(data.get("kp_Theta", 1.00))
+        settingsPID['ki_Theta'] = float(data.get("ki_Theta", 0.10))
+        settingsPID['kd_Theta'] = float(data.get("kd_Theta", 0.01))
 
         update_client()
         update_settings_save()
@@ -52,12 +52,12 @@ def retrieve_settings_save():
         settingsData['feedrate'] = int(s.get("feedrate"), 5)
 
 
-        settingsPID['kp_Rho'] = int(s.get("kp_Rho", 1.00 ))
-        settingsPID['ki_Rho'] = int(s.get("ki_Rho", 0.10))
-        settingsPID['kd_Rho'] = int(s.get("kd_Rho", 0.01))
-        settingsPID['kp_Theta'] = int(s.get("kp_Theta", 1.00))
-        settingsPID['ki_Theta'] = int(s.get("ki_Theta", 0.10))
-        settingsPID['kd_Theta'] = int(s.get("kd_Theta", 0.01))
+        settingsPID['kp_Rho'] = float(s.get("kp_Rho", 1.00 ))
+        settingsPID['ki_Rho'] = float(s.get("ki_Rho", 0.10))
+        settingsPID['kd_Rho'] = float(s.get("kd_Rho", 0.01))
+        settingsPID['kp_Theta'] = float(s.get("kp_Theta", 1.00))
+        settingsPID['ki_Theta'] = float(s.get("ki_Theta", 0.10))
+        settingsPID['kd_Theta'] = float(s.get("kd_Theta", 0.01))
 
     else:
         print("Settings section not found in file.")

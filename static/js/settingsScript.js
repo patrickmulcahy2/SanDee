@@ -57,14 +57,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Save button handler
     document.querySelector(".save-button").addEventListener("click", () => {
         const updatedSettings = {
-            feedrate: parseInt(document.getElementById("feedrate").value),
+            feedrate: parseFloat(document.getElementById("feedrate").value),
 
-            kp_Rho: parseInt(document.getElementById("kp-rho").value),
-            ki_Rho: parseInt(document.getElementById("ki-rho").value),
-            kd_Rho: parseInt(document.getElementById("kd-rho").value),
-            kp_Theta: parseInt(document.getElementById("kp-theta").value),
-            ki_Theta: parseInt(document.getElementById("ki-theta").value),
-            kd_Theta: parseInt(document.getElementById("kd-theta").value),
+            kp_Rho: parseFloat(document.getElementById("kp-rho").value),
+            ki_Rho: parseFloat(document.getElementById("ki-rho").value),
+            kd_Rho: parseFloat(document.getElementById("kd-rho").value),
+            kp_Theta: parseFloat(document.getElementById("kp-theta").value),
+            ki_Theta: parseFloat(document.getElementById("ki-theta").value),
+            kd_Theta: parseFloat(document.getElementById("kd-theta").value),
         };
 
         socket.emit("settings_sent", updatedSettings);
