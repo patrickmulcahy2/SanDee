@@ -34,6 +34,7 @@ def connect():
     print("Client connected")
     with thread_lock:
         if thread is None:
+            pass
             # thread = socketio.start_background_task(updateData)
             # socketio.start_background_task(encoderTracking)
             # socketio.start_background_task(controlLoop)
