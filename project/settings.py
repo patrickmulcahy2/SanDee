@@ -5,8 +5,6 @@ import subprocess
 from flask import render_template, request, redirect, url_for, session, jsonify
 
 from .config import settingsData, settingsPID, app, socketio
-#from .utilities import sparkGapPressureCalc
-
 
 # Create a config parser instance
 configParser = configparser.ConfigParser()
@@ -24,6 +22,13 @@ def init_settings_handlers():
         global settingsData
 
         settingsData['chargeTimeout'] = int(data.get("feedrate"), 5)
+
+        settingsPID['kp_Rho'] = int(data.get("kp_Rho"), 1.00)
+        settingsPID['ki_Rho'] = int(data.get("ki_Rho"), 0.10)
+        settingsPID['kd_Rho'] = int(data.get("kd_Rho"), 0.01)
+        settingsPID['kp_Theta'] = int(data.get("kp_Theta"), 1.00)
+        settingsPID['ki_Theta'] = int(data.get("ki_Theta"), 0.10)
+        settingsPID['kd_Theta'] = int(data.get("kd_Theta"), 0.01)
 
         update_client()
         update_settings_save()

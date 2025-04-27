@@ -5,58 +5,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const settingsData = window.settingsData || {};
 
     // Populate form fields
-    if (settingsData.chargeTimeout !== undefined) {
-        document.getElementById("timeout").value = settingsData.chargeTimeout;
+    if (settingsData.feedrate !== undefined) {
+        document.getElementById("feedrate").value = settingsData.feedrate;
     }
 
-    if (settingsData.supplyVoltage !== undefined) {
-        document.getElementById("supply-voltage").value = settingsData.supplyVoltage;
+    //Rho Gains
+    if (settingsPID.kp_Rho !== undefined) {
+        document.getElementById("kp-rho").value = settingsData.kp_Rho;
     }
 
-    if (settingsData.supplyWattage !== undefined) {
-        document.getElementById("supply-power").value = settingsData.supplyWattage;
+    if (settingsPID.ki_Rho !== undefined) {
+        document.getElementById("ki-rho").value = settingsData.ki_Rho;
     }
 
-    if (settingsData.plotSampleRate !== undefined) {
-        document.getElementById("plot-sample-rate").value = settingsData.plotSampleRate;
+    if (settingsPID.kd_Rho !== undefined) {
+        document.getElementById("kd-rho").value = settingsData.kd_Rho;
     }
 
-    if (settingsData.plotLength !== undefined) {
-        document.getElementById("plot-length").value = settingsData.plotLength;
+    //Theta  Gains
+    if (settingsPID.kp_Theta !== undefined) {
+        document.getElementById("kp-theta").value = settingsData.kp_Theta;
     }
 
-    if (settingsData.pressureMultiplier !== undefined) {
-        document.getElementById("pressure-multiplier").value = settingsData.pressureMultiplier;
+    if (settingsPID.ki_Theta !== undefined) {
+        document.getElementById("ki-theta").value = settingsData.ki_Theta;
     }
 
-    if (settingsData.pressureOffset !== undefined) {
-        document.getElementById("pressure-offset").value = settingsData.pressureOffset;
+    if (settingsPID.kd_Theta !== undefined) {
+        document.getElementById("kd-theta").value = settingsData.kd_Theta;
     }
 
-    if (settingsData.chargeMultiplier !== undefined) {
-        document.getElementById("charge-multiplier").value = settingsData.chargeMultiplier;
-    }
-
-    if (settingsData.chargeOffset !== undefined) {
-        document.getElementById("charge-offset").value = settingsData.chargeOffset;
-    }
-    // Save button handler
-    document.querySelector(".save-button").addEventListener("click", () => {
-        const updatedSettings = {
-            chargeTimeout: parseInt(document.getElementById("timeout").value),
-            supplyVoltage: parseFloat(document.getElementById("supply-voltage").value),
-            supplyWattage: parseFloat(document.getElementById("supply-power").value),
-            plotSampleRate: parseInt(document.getElementById("plot-sample-rate").value),
-            plotLength: parseInt(document.getElementById("plot-length").value),
-            pressureMultiplier: parseFloat(document.getElementById("pressure-multiplier").value),
-            pressureOffset: parseFloat(document.getElementById("pressure-offset").value),
-            chargeMultiplier: parseFloat(document.getElementById("charge-multiplier").value),
-            chargeOffset: parseFloat(document.getElementById("charge-offset").value),
-        };
-
-        socket.emit("settings_sent", updatedSettings);
-        console.log("Settings sent:", updatedSettings);
-    });
 
     // Cancel button can optionally reset the form or navigate
     document.querySelector(".cancel-button").addEventListener("click", () => {
@@ -64,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.querySelector(".PID-button").addEventListener("click", () => {
-        location.reload(); // simple way to reset fields to original server values
+        window.location.href = "/PID-tuner";
     });
 
     window.reboot = function(command) {
@@ -74,25 +52,17 @@ document.addEventListener("DOMContentLoaded", () => {
         socket.emit("reboot");
     }
 
-function settingsLink() {
-    if (!stopCheck) {
-        const proceed = confirm("⚠️ Warning: continuing this link will cancel the active cycle.\n\nDo you want to continue?");
-        if (!proceed) return;
-    }
-    window.location.href = "/settings";
-}
-
+    // Save button handler
     document.querySelector(".save-button").addEventListener("click", () => {
         const updatedSettings = {
-            chargeTimeout: parseInt(document.getElementById("timeout").value),
-            supplyVoltage: parseFloat(document.getElementById("supply-voltage").value),
-            supplyWattage: parseFloat(document.getElementById("supply-power").value),
-            plotSampleRate: parseInt(document.getElementById("plot-sample-rate").value),
-            plotLength: parseInt(document.getElementById("plot-length").value),
-            pressureMultiplier: parseFloat(document.getElementById("pressure-multiplier").value),
-            pressureOffset: parseFloat(document.getElementById("pressure-offset").value),
-            chargeMultiplier: parseFloat(document.getElementById("charge-multiplier").value),
-            chargeOffset: parseFloat(document.getElementById("charge-offset").value),
+            feedrate: parseInt(document.getElementById("feedrate").value),
+
+            kp_Rho: parseInt(document.getElementById("kp-rho").value),
+            ki_Rho: parseInt(document.getElementById("ki-rho").value),
+            kd_Rho: parseInt(document.getElementById("kd-rho").value),
+            kp_Theta: parseInt(document.getElementById("kp-theta").value),
+            ki_Theta: parseInt(document.getElementById("ki-theta").value),
+            kd_Theta: parseInt(document.getElementById("kd-theta").value),
         };
 
         socket.emit("settings_sent", updatedSettings);
