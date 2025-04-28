@@ -11,9 +11,6 @@ def init_utils_handlers():
 
 
 
-rhoConversionFactor = 1  #Convert encoder increments to inches from center
-thetaConversionFactor = 1  #Convert encoder increments to degrees from 0°
-
 
 def rhoCalibrate(rho_encoder):
 	rho_rotations = rho_encoder / gearRatios["encoderTicksPerRev"]
@@ -36,3 +33,14 @@ def linearVelocityCalc(rho_velocity_encoder, theta_velocity_encoder):
 	linearVelocity = math.sqrt((rhoPrimeCalibrated ** 2) + tangentialVelocity)
 	
 	return linearVelocity
+
+
+def polar_to_cartesian(theta, rho):
+    x = rho * math.cos(theta)
+    y = rho * math.sin(theta)
+    return x, y
+
+def cartesian_to_polar(x, y):
+    rho = math.sqrt(x**2 + y**2)  # Radius (distance from the origin)
+    theta = math.atan2(y, x)  # Angle in radians
+    return theta, rho

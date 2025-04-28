@@ -52,6 +52,8 @@ rhoNeg.start(0)
 thetaNeg.start(0)
 thetaPos.start(0)
 
+MAX_RHO = 8.0 #inches from center
+
 gearRatios = {
     'thetaToDrive': (320/40),
     'rhoToDrive': 1.572,
@@ -72,8 +74,6 @@ settingsData = {
     'feedrate': 5,          #inch per second
 }
 
-
-
 userInputs = {
     'feedrateOffset': 0,    #inch per second
 }
@@ -89,6 +89,7 @@ currVelocity = {
     'thetaVelocity': 0,     #deg/s
     'linearSpeed': 0        #in/s
 }
+
 reqPosition = {
     'rhoReq': 0,          #inches
     'thetaReq': 0         #degrees

@@ -146,7 +146,6 @@ input[type="number"] {
     border-radius: 50%;
     overflow: hidden;
     z-index: 1000; /* Make sure it’s above most elements */
-    cursor: url('/static/images/circle-cursor.png'), auto; /* Custom cursor */
 }
 
 .kinematic-states {

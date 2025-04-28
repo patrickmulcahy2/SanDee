@@ -12,6 +12,8 @@ class Encoder:
 
         # Encoder state tracking
         self.position = 0
+        self.last_position = 0
+        
         self.last_a = GPIO.input(self.pin_a)
         self.last_b = GPIO.input(self.pin_b)
 
@@ -63,7 +65,7 @@ class Encoder:
         GPIO.cleanup()
 
 def read_encoders(dT):
-    global currPosition
+    global currPosition, currVelocity
     # Create Encoder objects for rho and theta
     encoder_rho = Encoder(IO_pins["encoder_rho_A"], IO_pins["encoder_rho_B"])
     encoder_theta = Encoder(IO_pins["encoder_theta_A"], IO_pins["encoder_theta_B"])
