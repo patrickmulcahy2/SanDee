@@ -64,8 +64,8 @@ trackingCircle.addEventListener('mousemove', (e) => {
     redDot.style.left = `${x + rect.left}px`;
     redDot.style.top = `${y + rect.top}px`;
 
-    console.log(`Mouse X: ${x}, Mouse Y: ${y}`);
-    console.log(`Polar Coordinates -> r: ${rho}, θ: ${theta}`);
+    // console.log(`Mouse X: ${x}, Mouse Y: ${y}`);
+    // console.log(`Polar Coordinates -> r: ${rho}, θ: ${theta}`);
 
     // Emit the polar coordinates to the backend
     socket.emit('sendPolarCoordinates', { theta, rho });
