@@ -11,6 +11,8 @@ socket.on("updatePosition", function (data){
     document.getElementById("rhoCurrPosVal").value = data.currPosition.rhoCurr || 0
     document.getElementById("thetaCurrPosVal").value = data.currPosition.thetaCurr || 0
 
+    console.log(data.reqPosition.rhoReq)
+
     document.getElementById("rhoReqPosVal").value = data.reqPosition.rhoReq || 0
     document.getElementById("thetaReqPosVal").value = data.reqPosition.thetaReq|| 0
 

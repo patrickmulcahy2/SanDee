@@ -14,6 +14,3 @@ def init_manualControl_handlers():
 
 		reqPosition["rhoReq"] = rhoReq
 		reqPosition["thetaReq"] = thetaReq
-
-		print(rhoReq)
-		print(thetaReq)
