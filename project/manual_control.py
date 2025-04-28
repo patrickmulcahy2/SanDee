@@ -9,7 +9,7 @@ def init_manualControl_handlers():
 	def recievePolarCoorinates_manual(data):
 
 		rhoReq = data.get('rho')
-	    thetaReq = data.get('theta')
+		thetaReq = data.get('theta')
 
 		reqPosition["rhoReq"] = rhoReq
 		reqPosition["thetaReq"] = thetaReq
