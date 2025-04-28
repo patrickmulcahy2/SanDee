@@ -7,7 +7,7 @@ import time
 from .config import settingsData, socketio, currPosition, IO_pins
 from .client_comms import update_client
 from .encoder_tracker import read_encoders
-from .PID_controller import 
+from .PID_controller import control_motors
 
 data_thread_lock = Lock()
 
