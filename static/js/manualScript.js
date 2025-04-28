@@ -52,7 +52,7 @@ trackingCircle.addEventListener('mousemove', (e) => {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    // Calculate the distance (r) from the center of the circle
+    // Calculate the distance (rho) from the center of the circle
     const rho = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
 
     // Calculate the angle (theta) in radians
@@ -63,7 +63,7 @@ trackingCircle.addEventListener('mousemove', (e) => {
     redDot.style.top = `${y + rect.top}px`;
 
     console.log(`Mouse X: ${x}, Mouse Y: ${y}`);
-    console.log(`Polar Coordinates -> r: ${r}, θ: ${theta}`);
+    console.log(`Polar Coordinates -> r: ${rho}, θ: ${theta}`);
 
     // Emit the polar coordinates to the backend
     socket.emit('sendPolarCoordinates', { theta, rho });
