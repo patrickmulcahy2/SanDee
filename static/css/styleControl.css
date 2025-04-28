@@ -159,6 +159,7 @@ input[type="number"] {
     grid-template-rows: repeat(3, 1fr); /* 3 rows */
     gap: 10px; /* Smaller gap between items */
     padding: 10px; /* Less padding for more compactness */
+    width: 25%
 }
 
 .kinematic-item {

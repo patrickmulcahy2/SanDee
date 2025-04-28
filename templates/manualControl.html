@@ -17,8 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Local JS -->
-    <script src="{{ url_for('static', filename='js/autoScript.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/modules/plotting.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/manualScript.js') }}" defer></script>
 </head>
 
 <body>
@@ -43,19 +42,19 @@
                 <h2>Kinematic States</h2>
                 <div class="kinematic-grid">
                     <div class="kinematic-item" id="rhoCurrPos">
-                        <strong>Rho Current Position</strong>
+                        <strong>Rho Curr Pos</strong>
                         <div class="non-editable-box" id="rhoCurrPosVal">0</div>
                     </div>
                     <div class="kinematic-item" id="thetaPos">
-                        <strong>Theta Position</strong>
+                        <strong>Theta Curr Pos</strong>
                         <div class="non-editable-box" id="thetaCurrPosVal">0</div>
                     </div>
                     <div class="kinematic-item" id="rhoReqPos">
-                        <strong>Rho Requested Position</strong>
+                        <strong>Rho Req Pos</strong>
                         <div class="non-editable-box" id="rhoReqPosVal">0</div>
                     </div>
                     <div class="kinematic-item" id="thetaReqPos">
-                        <strong>Theta Requested Position</strong>
+                        <strong>Theta Req Pos</strong>
                         <div class="non-editable-box" id="thetaReqPosVal">0</div>
                     </div>
                     <div class="kinematic-item" id="rhoError">
