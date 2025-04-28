@@ -1,3 +1,24 @@
+var socket = io.connect(location.protocol + "//" + document.domain + ":" + location.port);
+
+socket.on("updateInputs", function (data){
+    document.getElementById("feedrateOffset").value = data.userInputs.feedrateOffset || 0
+    document.getElementById("feedrate").value = data.settingsData.feedrate || 0
+
+});
+
+
+socket.on("updatePosition", function (data){
+    document.getElementById("rhoCurrPosVal").value = data.currPosition.rhoCurr || 0
+    document.getElementById("thetaCurrPosVal").value = data.currPosition.thetaCurr || 0
+
+    document.getElementById("rhoReqPosVal").value = data.reqPosition.rhoReq || 0
+    document.getElementById("thetaReqPosVal").value = data.reqPosition.thetaReq|| 0
+
+    document.getElementById("rhoErrorVal").value = (data.currPosition.rhoCurr - data.reqPosition.rhoReq)|| 0
+    document.getElementById("thetaErrorVal").value = (data.currPosition.thetaCurr - data.reqPosition.thetaReq) || 0
+
+});
+
 // JavaScript to track the mouse position inside the circle
 const trackingCircle = document.getElementById('tracking-circle');
 
@@ -30,3 +51,4 @@ trackingCircle.addEventListener('mousemove', (e) => {
 
     console.log(`Mouse X: ${x - rect.left}, Mouse Y: ${y - rect.top}`);
 });
+

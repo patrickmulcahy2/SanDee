@@ -116,6 +116,7 @@ input[type="number"] {
 }
 
 
+
 .settingsLink {
     position: fixed;
     bottom: 10px;
@@ -146,4 +147,39 @@ input[type="number"] {
     overflow: hidden;
     z-index: 1000; /* Make sure it’s above most elements */
     cursor: url('/static/images/circle-cursor.png'), auto; /* Custom cursor */
+}
+
+/* Add this to styleControl.css */
+.kinematic-states {
+    margin-top: 30px;
+}
+
+.kinematic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: repeat(3, 1fr); /* 3 rows */
+    gap: 20px;
+    padding: 20px;
+}
+
+.kinematic-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.kinematic-item strong {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.non-editable-box {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 1.2em;
+    width: 100%;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
 }

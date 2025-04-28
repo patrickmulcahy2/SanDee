@@ -1,14 +1,17 @@
 from flask_socketio import SocketIO
 
-from .config import userInputs, currPosition, reqPosition, socketio
+from .config import settingsData, userInputs, currPosition, reqPosition, socketio
 
 
 def update_client():
-    socketio.emit("updateInputs", userInputs)
+    socketio.emit("updateInputs", {
+        "userInputs": userInputs,
+        "settingsData" : settingsData,
+        })
     socketio.emit("updatePosition", {
-    	"currPos" : currPosition,
-    	"reqPos"  : reqPosition, }
-    	)
+    	"currPosition" : currPosition,
+    	"reqPosition"  : reqPosition, 
+    	})
 
 
 def init_comms_handlers():

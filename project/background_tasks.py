@@ -18,7 +18,7 @@ def updateData():
     while True:
         with data_thread_lock:
             update_client()
-        socketio.sleep(5*dT)  # Send data every second (adjust as needed)
+        socketio.sleep(50*dT)
 
 def encoderTracking():
     while True:
