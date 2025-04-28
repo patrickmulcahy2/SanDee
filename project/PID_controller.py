@@ -99,11 +99,11 @@ def control_motors(dT):
 
 			socketio.sleep(dT)
 	except ValueError:
-    	print("Error, no longer controlling motors")
+		print("Error, no longer controlling motors")
 
-    finally:
-        # Clean up GPIO on exit
-        rho_motor.cleanup()
-        theta_motor.cleanup()
-        GPIO.cleanup()
+	finally:
+		# Clean up GPIO on exit
+		rho_motor.cleanup()
+		theta_motor.cleanup()
+		GPIO.cleanup()
     
