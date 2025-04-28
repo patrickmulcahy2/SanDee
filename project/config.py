@@ -20,11 +20,11 @@ GPIO.setwarnings(False)
 
 IO_pins = {
     # Relay GPIOs 
-    "rho_pos": 29,
-    "rho_neg": 31,
-    "theta_pos": 33,
-    "theta_neg": 35,
-    "encoder_rho_A": 32,
+    "rho_pos": 12,
+    "rho_neg": 32,
+    "theta_neg": 33,
+    "theta_pos": 35,
+    "encoder_rho_A": 26,
     "encoder_rho_B": 36,
     "encoder_theta_A": 38,
     "encoder_theta_B": 40,
@@ -34,20 +34,29 @@ IO_pins = {
 # Output pin setups
 GPIO.setup(IO_pins["rho_pos"], GPIO.OUT)   
 GPIO.setup(IO_pins["rho_neg"], GPIO.OUT)   
-GPIO.setup(IO_pins["theta_pos"], GPIO.OUT)   
 GPIO.setup(IO_pins["theta_neg"], GPIO.OUT)   
+GPIO.setup(IO_pins["theta_pos"], GPIO.OUT)   
 GPIO.setup(IO_pins["encoder_rho_A"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(IO_pins["encoder_rho_B"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(IO_pins["encoder_theta_A"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(IO_pins["encoder_theta_B"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # Initialize GPIO states
-GPIO.output(IO_pins["rho_pos"], GPIO.LOW)
-GPIO.output(IO_pins["rho_neg"], GPIO.LOW)
-GPIO.output(IO_pins["theta_pos"], GPIO.LOW)
-GPIO.output(IO_pins["theta_neg"], GPIO.LOW)
+PWM_freq = 1000 # 1000 Hz frequency
+rhoPos = GPIO.PWM(IO_pins["rho_pos"], PWM_freq)  
+rhoNeg = GPIO.PWM(IO_pins["rho_neg"], PWM_freq)  
+thetaNeg = GPIO.PWM(IO_pins["theta_neg"], PWM_freq)  
+thetaPos = GPIO.PWM(IO_pins["theta_pos"], PWM_freq)  
+rhoPos.start(0)
+rhoNeg.start(0)
+thetaNeg.start(0)
+thetaPos.start(0)
 
-
+gearRatios = {
+    'thetaToDrive': (320/40),
+    'rhoToDrive': 1.572,
+    'encoderTicksPerRev': 12,
+}
 
 #Define default states and settings (user inputs)
 settingsPID = {
@@ -70,10 +79,16 @@ userInputs = {
 }
 
 currPosition = {
-    'rhoCurr': 0,          #inches
-    'thetaCurr': 0         #degrees
+    'rhoCurr': 0,           #inches
+    'thetaCurr': 0,         #degrees
+
 }
 
+currVelocity = {
+    'rhoVelocity': 0,       #in/s
+    'thetaVelocity': 0,     #deg/s
+    'linearSpeed': 0        #in/s
+}
 reqPosition = {
     'rhoReq': 0,          #inches
     'thetaReq': 0         #degrees

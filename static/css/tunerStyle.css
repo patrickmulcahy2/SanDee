@@ -1,0 +1,182 @@
+/* styleSettings.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: gray;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 2rem;
+    color: #00ffae;
+}
+
+h3 {
+    color:cornflowerblue;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.left-panel {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.logo {
+    width: 250px;
+    height: auto;
+    margin-top: 10px;
+    margin-left: -250px;
+}
+
+.settings-container {
+    background-color: #1e1e1e;
+    border-radius: 16px;
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 255, 174, 0.2);
+}
+
+.setting-item {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-item label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ccc;
+}
+
+.setting-item input,
+.setting-item select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.setting-item input:focus,
+.setting-item select:focus {
+    border-color: #00ffae;
+    outline: none;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.save-button {
+    background-color: green;
+    color: white;
+}
+
+.cancel-button {
+    background-color: red;
+    color: white;
+}
+
+.PID-button {
+    background-color: blue;
+    color: white;
+}
+
+.status-message {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1rem;
+    color: #00ffae;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.status-message.visible {
+    opacity: 1;
+}
+
+
+a.pageLink{
+    display: inline-block;
+    margin: 30px 10px;
+    text-align: center;
+    color: #00ffae;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom 0.2s;
+}
+
+a.pageLink:hover {
+    border-bottom: 2px solid #00ffae;
+}
+
+/* === Responsive Design === */
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .left-panel {
+        margin-bottom: 20px;
+        padding: 0;
+        align-items: center;
+    }
+
+    .logo {
+        margin: 0 auto;
+        display: block;
+        width: 180px;
+    }
+
+    .settings-container {
+        padding: 20px;
+        max-width: 100%;
+        border-radius: 12px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .button-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    a.pageLink {
+        display: block;
+        margin: 10px auto;
+    }
+}

@@ -1,11 +1,8 @@
 import RPi.GPIO as GPIO
 import time
 
-from flask_socketio import SocketIO
-
-
-from .config import IO_pins, currPosition
-
+from .config import IO_pins, currPosition, currVelocity, socketio
+from .utils import rhoCalibrate, thetaCalibrate, linearVelocityCalc
 
 class Encoder:
     def __init__(self, pin_a, pin_b):
@@ -17,6 +14,9 @@ class Encoder:
         self.position = 0
         self.last_a = GPIO.input(self.pin_a)
         self.last_b = GPIO.input(self.pin_b)
+
+        self.last_time = time.time()
+        self.angular_velocity = 0
 
         # Interrupts for encoder signal changes
         GPIO.add_event_detect(self.pin_a, GPIO.BOTH, callback=self.update_position)
@@ -38,11 +38,23 @@ class Encoder:
         self.last_a = a_state
         self.last_b = b_state
 
+        # Calculate angular velocity
+        current_time = time.time()
+        dT = current_time - self.last_time  # Time difference
+        if dT > 0:
+            self.angular_velocity = (self.position - self.last_position) / dT  # Position change over time
+        self.last_time = current_time
+        self.last_position = self.position
+
     def get_position(self):
         return self.position
 
+    def get_angular_velocity(self):
+        return self.angular_velocity
+
     def reset_position(self):
         self.position = 0
+        self.angular_velocity = 0  # Reset velocity when position is reset
 
     def cleanup(self):
         # Clean up GPIO settings
@@ -50,7 +62,7 @@ class Encoder:
         GPIO.remove_event_detect(self.pin_b)
         GPIO.cleanup()
 
-def read_encoders():
+def read_encoders(dT):
     global currPosition
     # Create Encoder objects for rho and theta
     encoder_rho = Encoder(IO_pins["encoder_rho_A"], IO_pins["encoder_rho_B"])
@@ -59,22 +71,22 @@ def read_encoders():
     try:
         while True:
             # Get the current positions of rho and theta
-            rho_position = encoder_rho.get_position()
-            theta_position = encoder_theta.get_position()
+            rho_position_encoder = encoder_rho.get_position()
+            theta_position_encoder = encoder_theta.get_position()
 
-            rhoConversionFactor = 1  #Convert encoder increments to inches from center
-            thetaConversionFactor = 1  #Convert encoder increments to degrees from 0°
-
+            rho_velocity_encoder = encoder_rho.get_angular_velocity()  # Get rho angular velocity
+            theta_velocity_encoder = encoder_theta.get_angular_velocity()  # Get theta angular velocity
 
             # Update the current position values (convert counts to desired units)
-            currPosition['rhoCurr'] = rho_position * rhoConversionFactor
-            currPosition['thetaCurr'] = theta_position * thetaConversionFactor
+            currPosition['rhoCurr'] = rhoCalibrate(rho_position_encoder)
+            currPosition['thetaCurr'] = thetaCalibrate(theta_position_encoder)
 
-            # Print current position values (optional)
-            print(f"Rho Position: {currPosition['rhoCurr']} inches, Theta Position: {currPosition['thetaCurr']} degrees")
+            currVelocity['rhoVelocity'] = rhoCalibrate(rho_velocity_encoder)
+            currVelocity['thetaVelocity'] = thetaCalibrate(theta_velocity_encoder)
+            currVelocity['linearVelocity'] = linearVelocityCalc(rho_velocity_encoder, theta_velocity_encoder)
 
-            # Sleep for a short period before reading again
-            socketio.sleep(0.01)  # Adjust based on your update frequency requirements
+            socketio.sleep(dT)
+
     
     except KeyboardInterrupt:
         print("Program stopped by user.")

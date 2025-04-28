@@ -4,28 +4,27 @@ import RPi.GPIO as GPIO
 import time
 
 
-from .config import settingsData, socketio
+from .config import settingsData, socketio, currPosition, IO_pins
 from .client_comms import update_client
 from .encoder_tracker import read_encoders
+from .PID_controller import 
 
 data_thread_lock = Lock()
 
+dT = 0.01 #Seconds between polls
 
 def updateData():
     """Continuously sends templateData to the client."""
     while True:
         with data_thread_lock:
             update_client()
-        socketio.sleep(0.05)  # Send data every second (adjust as needed)
-
-
+        socketio.sleep(5*dT)  # Send data every second (adjust as needed)
 
 def encoderTracking():
     while True:
-        read_encoders()
+        read_encoders(dT)
 
 
 def controlLoop(): 
     while True:
-        pass
-        
+        control_motors(dT)

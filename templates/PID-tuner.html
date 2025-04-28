@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleTuner.css') }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://cdn.prod.website-files.com/626c0a10a6164428fc66540f/6285040d98fe62f3e7ddb8cf_Eden-Logo-32x32%20(1).png">
+
+    <!-- External JS Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Local JS -->
+    <script src="{{ url_for('static', filename='js/tunerScript.js') }}" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <img src="/static/images/logo.png" alt="Eden Logo" class="logo">
+        </div>
+
+        <div class="right-panel">
+            <h2>System Settings</h2>
+            <div class="settings-container">
+
+                    <!-- Rho Gains Section -->
+                <div class="setting-item">
+                    <label>Rho Gains Settings:</label>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span>Kp =</span>
+                        <input type="number" id="kp-rho" style="width: 100px;">
+                        <span>Ki = </span>
+                        <input type="number" id="ki-rho" style="width: 100px;">
+                        <span>Kd = </span>
+                        <input type="number" id="kd-rho" style="width: 100px;">
+                    </div>
+                </div>
+
+                    <!-- Theta Gains Section -->
+                <div class="setting-item">
+                    <label>Theta Gains Settings:</label>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span>Kp =</span>
+                        <input type="number" id="kp-theta" style="width: 100px;">
+                        <span>Ki = </span>
+                        <input type="number" id="ki-theta" style="width: 100px;">
+                        <span>Kd = </span>
+                        <input type="number" id="kd-theta" style="width: 100px;">
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-container">
+                    <button class="button save-button">Save</button>
+                    <button class="button PID-button">Tune PID</button>
+                    <button class="button cancel-button">Cancel</button>
+                </div>
+            </div>
+
+            <div class="status-message" id="status-message"></div>
+
+            <div class="nav-links">
+                <a class="pageLink" href="/">Control</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
