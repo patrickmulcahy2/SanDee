@@ -1,8 +1,9 @@
-import RPi.GPIO as GPIO
-import time
+try:
+    import RPi.GPIO as GPIO
+except (ImportError, RuntimeError):
+    from mock.RPi import GPIO
 
-from .config import IO_pins, currPosition, currVelocity, socketio
-from .utils import rhoCalibrate, thetaCalibrate, linearVelocityCalc
+import time
 
 class Encoder:
     def __init__(self, pin_a, pin_b):
@@ -63,37 +64,3 @@ class Encoder:
         GPIO.remove_event_detect(self.pin_a)
         GPIO.remove_event_detect(self.pin_b)
         GPIO.cleanup()
-
-def read_encoders(dT):
-    global currPosition, currVelocity
-    # Create Encoder objects for rho and theta
-    encoder_rho = Encoder(IO_pins["encoder_rho_A"], IO_pins["encoder_rho_B"])
-    encoder_theta = Encoder(IO_pins["encoder_theta_A"], IO_pins["encoder_theta_B"])
-
-    try:
-        while True:
-            # Get the current positions of rho and theta
-            rho_position_encoder = encoder_rho.get_position()
-            theta_position_encoder = encoder_theta.get_position()
-
-            rho_velocity_encoder = encoder_rho.get_angular_velocity()  # Get rho angular velocity
-            theta_velocity_encoder = encoder_theta.get_angular_velocity()  # Get theta angular velocity
-
-            # Update the current position values (convert counts to desired units)
-            currPosition['rhoCurr'] = rhoCalibrate(rho_position_encoder)
-            currPosition['thetaCurr'] = thetaCalibrate(theta_position_encoder)
-
-            currVelocity['rhoVelocity'] = rhoCalibrate(rho_velocity_encoder)
-            currVelocity['thetaVelocity'] = thetaCalibrate(theta_velocity_encoder)
-            currVelocity['linearVelocity'] = linearVelocityCalc(rho_velocity_encoder, theta_velocity_encoder)
-
-            socketio.sleep(dT)
-
-    
-    except KeyboardInterrupt:
-        print("Program stopped by user.")
-    
-    finally:
-        # Clean up GPIO on exit
-        encoder_rho.cleanup()
-        encoder_theta.cleanup()

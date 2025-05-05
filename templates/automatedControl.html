@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleControl.css') }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.svg') }}">
+
+    <!-- External JS Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Local JS -->
+    <script src="{{ url_for('static', filename='js/autoScript.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/modules/polarChart_auto.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/modules/toolpathSelector.js') }}" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <img src="/static/images/logo.png" alt="Logo" class="logo">
+            <div class="button-container">
+                <button class="button go-button" onclick="sendCommand('go')">GO</button>
+                <button class="button pause-button" onclick="sendCommand('pause')">PAUSE</button>
+                <button class="button clear-button" onclick="sendCommand('clear'); clearDrawing()">CLEAR</button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <h2>User Inputs:</h2>
+            <div class="presets">
+                <div class="preset-item"><span>Speed Offset(in/s)</span> <input type="number" id="feedrateOffset"></div>
+                <div class="preset-item"><span>Feedrate(in/s)</span> <input type="number" id="feedrate"></div>
+            </div>
+
+            <h3>Select Toolpath:</h3>
+            <select id="toolpath-dropdown" class="dropdown">
+                <option disabled selected>Loading options...</option>
+            </select>
+
+            <div id="image-box-container">
+                <img id="toolpath-image" src="" alt="Toolpath Preview" class="toolpath-image" style="display: none; max-width: 100%; margin-top: 10px;">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Sticky Status Bar -->
+    <div class="state-indicators-section">
+        <h2>Status Indicators</h2>
+        <div class="state-indicators">
+            <div class="state-item">Status Bar 
+                <div class="non-editable-box" id="status-bar">
+                    <div id="status-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Links to Other Pages -->
+    <a href="/manual" class="controlMode">Manual Control</a>
+    <a href="/settings" class="settingsLink">Settings</a>
+
+    <div id="tracking-circle">
+        <canvas id="drawing-canvas"></canvas>
+    </div>
+</body>
+</html>

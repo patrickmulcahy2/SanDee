@@ -1,0 +1,14 @@
+[
+    {
+        "type": "line",
+        "start": {"rho": 0.0, "theta": 0},
+        "end": {"rho": 5.0, "theta": 90}
+    },
+    {
+        "type": "arc",
+        "start": {"rho": 5.0, "theta": 90},
+        "end": {"rho": 5.0, "theta": 180},
+        "radius": 3.0,
+        "direction": "CCW"
+    }
+]

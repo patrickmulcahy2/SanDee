@@ -1,4 +1,7 @@
 flask
 flask-socketio
 RPi.GPIO
-
+matplotlib
+rpi_ws281x 
+adafruit-circuitpython-neopixel
+scipy

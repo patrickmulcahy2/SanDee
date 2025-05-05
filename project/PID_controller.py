@@ -1,14 +1,20 @@
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as GPIO
+except (ImportError, RuntimeError):
+    from mock.RPi import GPIO
+    
 import math
 import time
 
-from .config import IO_pins, currPosition, reqPosition, settingsPID, socketio
+from .config import currPosition, reqPosition, settingsPID, socketio
 from .config import rhoPos, rhoNeg, thetaNeg, thetaPos
+from .encoder_tracker import Encoder
 
 class Motor:
-	def __init__(self, motor_type, setpoint_getter, position_getter):
+	def __init__(self, motor_type, setpoint_getter, position_getter, encoder):
 		self.get_setpoint = setpoint_getter
 		self.get_position = position_getter
+		self.encoder = encoder
 
 		motor_params = {
 			"rho": {
@@ -58,6 +64,13 @@ class Motor:
 		elif output < -100:
 			output = -100
 
+		deadband = 5
+
+		if 0 < output < deadband:
+			output = 0
+		elif 0 > output > -deadband:
+			output = 0
+
 		self.sendMotorControl(output)
 
 	def sendMotorControl(self, output):
@@ -69,41 +82,49 @@ class Motor:
 			self.neg_pin.ChangeDutyCycle(0)
 
 
+	def homeMotor(self):
+		print("Starting homing sequence for motor...")
+
+		# Parameters
+		low_speed = 15  # % PWM, adjust as needed
+		timeout = 5     # seconds to prevent infinite loop
+		sample_interval = 0.05  # seconds
+		min_movement = 0.1  # degrees or mm per second — tune based on encoder noise
+
+		# Track encoder position
+		last_position = self.get_position()
+		start_time = time.time()
+
+		# Move in negative direction slowly
+		self.sendMotorControl(-low_speed)
+
+		while True:
+			time.sleep(sample_interval)
+			current_position = self.get_position()
+			delta = abs(current_position - last_position)
+
+			# Stop condition: movement becomes negligible
+			if delta < min_movement:
+				break
+
+			# Timeout fallback
+			if time.time() - start_time > timeout:
+				print("Homing timed out — no stall detected.")
+				break
+
+			last_position = current_position
+
+		# Stop the motor
+		self.sendMotorControl(0)
+
+		# Set home position
+		print("Homing complete. Setting position to zero.")
+		self.encoder.reset_position()
+		currPosition["rhoCurr"] = 0
+		reqPosition["rhoReq"] = 0
 
 	def cleanup(self):
         # Clean up GPIO settings
 		self.neg_pin.stop()
 		self.pos_pin.stop()
 		GPIO.cleanup()
-
-# Getter functions
-def get_rho_setpoint():
-    return reqPosition["rhoReq"]
-
-def get_rho_position():
-    return currPosition["rhoCurr"]
-
-def get_theta_setpoint():
-    return reqPosition["thetaReq"]
-
-def get_theta_position():
-    return currPosition["thetaCurr"]
-
-def control_motors(dT):
-	rho_motor_PID = Motor("rho", get_rho_setpoint, get_rho_position)
-	theta_motor_PID = Motor("theta", get_theta_setpoint, get_theta_position)
-	try:
-		while True: 
-			rho_motor_PID.maintain_position()
-			theta_motor_PID.maintain_position()
-
-			socketio.sleep(dT)
-	except ValueError:
-		print("Error, no longer controlling motors")
-
-	finally:
-		# Clean up GPIO on exit
-		rho_motor.cleanup()
-		theta_motor.cleanup()
-		GPIO.cleanup()
-    

@@ -1,4 +1,8 @@
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as GPIO
+except (ImportError, RuntimeError):
+    from mock.RPi import GPIO
+    
 from datetime import timedelta
 import os
 
@@ -14,12 +18,29 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 app.secret_key = "pfm"
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=15)
 
+class SystemStates:
+    def __init__(self):
+        self.pauseStatus = False
+        self.clearingStatus = False
+        self.patterningStatus = False
+        self.dT = 0.005
+        self.PID_active = True
+        self.statusPercent = 0
+
+system_states = SystemStates()
+
+
+class ledColors:
+    def __init__(self):
+        self.r = 0
+        self.g = 0
+        self.b = 0
+LED_color = ledColors()
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
 IO_pins = {
-    # Relay GPIOs 
     "rho_pos": 12,
     "rho_neg": 32,
     "theta_neg": 33,
@@ -28,6 +49,7 @@ IO_pins = {
     "encoder_rho_B": 36,
     "encoder_theta_A": 38,
     "encoder_theta_B": 40,
+    "LED_pin": 18,   #THIS IS BCM 18 Board 18
 }
 
 
@@ -52,11 +74,9 @@ rhoNeg.start(0)
 thetaNeg.start(0)
 thetaPos.start(0)
 
-MAX_RHO = 8.0 #inches from center
-
 gearRatios = {
     'thetaToDrive': (320/40),
-    'rhoToDrive': 1.572,
+    'rhoToDrive': 1.572,        #revs per inch? or inch per rev
     'encoderTicksPerRev': 12,
 }
 
@@ -71,11 +91,21 @@ settingsPID = {
 }
 
 settingsData = {
-    'feedrate': 5,          #inch per second
+    'feedrateMax': 10,          #inch per second
+    'feedrateMax_rho': 5,       #inch per second
+    'feedrateMax_theta': 20,    #rpm
+
+    'feedrateDefault': 5,       #inch per second
+    'rhoMax': 8,                #Rho arm length
+    'maxStepover': 0.125,       #Max position change stepover
+    'clearingStepover': 0.125,  #Max position change stepover
+    'ballSize': 1,              #Diameter of driving ball in inches
 }
 
 userInputs = {
-    'feedrateOffset': 0,    #inch per second
+    'feedrateOffset': 0,            #inch per second
+    'feedrate': 5,                  #inch per second
+    'selected_TP_filepath': None    #filepath of toolpath
 }
 
 currPosition = {

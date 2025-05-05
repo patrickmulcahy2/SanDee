@@ -8,13 +8,26 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    overflow: hidden; /* No scrollbars unless necessary */
+    overflow: hidden;
+    padding-bottom: 100px; /* Prevent content being hidden behind fixed bar */
+}
+
+.state-indicators-section {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    background-color: #ecf0f1;
+    border-top: 1px solid #ccc;
+    z-index: 999;
 }
 
 .container {
+    flex: 1; /* let it grow to take available space */
     display: flex;
-    height: calc(100vh - 200px); /* make it shorter to fit other sections */
+    overflow-y: auto;
 }
+
 
 .left-panel {
     width: 250px;
@@ -28,6 +41,29 @@ body {
 .logo {
     width: 80%;
     margin-bottom: 30px;
+}
+
+#status-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#status-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #4caf50;
+    transition: width 0.3s ease;
+}
+
+.button.disabled {
+    background-color: #555 !important;
+    color: #aaa !important;
+    cursor: not-allowed !important;
 }
 
 .button-container {
@@ -109,6 +145,7 @@ input[type="number"] {
     border-radius: 5px;
     text-decoration: none;
     font-family: Arial, sans-serif;
+    z-index:999;
 }
 
 .controlMode:hover {
@@ -128,25 +165,34 @@ input[type="number"] {
     border-radius: 5px;
     text-decoration: none;
     font-family: Arial, sans-serif;
+    z-index:999;
 }
 
 .settingsLink:hover {
     background: rgba(0, 0, 0, 0.9);
 }
 
+#drawing-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 #tracking-circle {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-20%, -75%);
-    width: 60vh; /* 50% of the viewport height */
+    transform: translate(-5%, -75%);
+    width: 60vh;
     height: 60vh;
-    background-color: rgba(0, 0, 255, 0.1); /* Light blue for visibility */
-    border: 2px solid blue;
     border-radius: 50%;
     overflow: hidden;
+    border: 2px solid blue;
+    background-color: rgba(0, 0, 255, 0.1);
     z-index: 1000; /* Make sure it’s above most elements */
+
 }
+
 
 .kinematic-states {
     margin-top: 20px; /* Reduce the margin for compactness */
@@ -174,6 +220,12 @@ input[type="number"] {
     font-size: 1em; /* Smaller font size for the title */
 }
 
+.error-readout {
+    background-color: #ffe5e5;
+    border: 1px solid #e0b4b4;
+    color: #a94442;
+}
+
 .non-editable-box {
     background-color: #f4f4f4;
     border: 1px solid #ddd;
@@ -182,4 +234,10 @@ input[type="number"] {
     width: 100%; /* Full width */
     text-align: center;
     font-family: 'Arial', sans-serif;
+}
+
+/* Limit the image size */
+#toolpath-image {
+    width: 25%; /* Makes the image responsive */
+    height: auto; /* Maintains aspect ratio */
 }

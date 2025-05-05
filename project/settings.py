@@ -6,6 +6,7 @@ from flask import render_template, request, redirect, url_for, session, jsonify
 
 from .config import settingsData, settingsPID, app, socketio
 from .client_comms import update_client
+from .hardware_center import home_motors
 
 # Create a config parser instance
 configParser = configparser.ConfigParser()
@@ -20,9 +21,15 @@ settings_file_path = os.path.join(os.path.dirname(__file__), "settings.cfg")
 def init_settings_handlers():
     @socketio.on('settings_sent')
     def new_settings(data):
-        global settingsData
+        settingsData['feedrateMax'] = float(data.get("feedrateMax", 5))
+        settingsData['feedrateMax_rho'] = float(data.get("feedrateMax_rho", 5))
+        settingsData['feedrateMax_theta'] = float(data.get("feedrateMax_theta", 5))
 
-        settingsData['chargeTimeout'] = float(data.get("feedrate", 5))
+        settingsData['feedrateDefault'] = float(data.get("feedrateDefault", 5))
+        settingsData['rhoMax'] = float(data.get("rhoMax", 8))
+        settingsData['maxStepover'] = float(data.get("maxStepover", 8))
+        settingsData['ballSize'] = float(data.get("ballSize", 8))
+        settingsData['clearingStepover'] = float(data.get("clearingStepover", 8))
 
         settingsPID['kp_Rho'] = float(data.get("kp_Rho", 1.00 ))
         settingsPID['ki_Rho'] = float(data.get("ki_Rho", 0.10))
@@ -31,17 +38,18 @@ def init_settings_handlers():
         settingsPID['ki_Theta'] = float(data.get("ki_Theta", 0.10))
         settingsPID['kd_Theta'] = float(data.get("kd_Theta", 0.01))
 
-        update_client()
         update_settings_save()
 
     @socketio.on("reboot") 
     def reboot():
         os.system("sudo reboot")
 
+    @socketio.on("homeMotors") 
+    def homeCalled():
+        home_motors()
+
 # Access settings file and update the settings
 def retrieve_settings_save():
-    global settingsData
-
     if not os.path.exists(settings_file_path):
         print("Settings file not found. Using default values.")
         return
@@ -50,7 +58,15 @@ def retrieve_settings_save():
 
     if 'Settings' in configParser:
         s = configParser['Settings']
-        settingsData['feedrate'] = float(s.get("feedrate", 5))
+        settingsData['feedrateMax'] = float(s.get("feedrateMax", 5))
+        settingsData['feedrateMax_rho'] = float(s.get("feedrateMax_rho", 5))
+        settingsData['feedrateMax_theta'] = float(s.get("feedrateMax_theta", 20))
+
+        settingsData['feedrateDefault'] = float(s.get("feedrateDefault", 5))
+        settingsData['rhoMax'] = float(s.get("rhoMax", 8))
+        settingsData['maxStepover'] = float(s.get("maxStepover", 8))
+        settingsData['ballSize'] = float(s.get("ballSize", 8))
+        settingsData['clearingStepover'] = float(s.get("clearingStepover", 8))
 
 
         settingsPID['kp_Rho'] = float(s.get("kp_Rho", 1.00 ))
@@ -68,7 +84,16 @@ def update_settings_save():
         configParser['Settings'] = {}
 
     s = configParser['Settings']
-    s["feedrate"] = str(settingsData['feedrate'])
+    s["feedrateMax"] = str(settingsData['feedrateMax'])
+    s["feedrateMax_rho"] = str(settingsData['feedrateMax_rho'])
+    s["feedrateMax_theta"] = str(settingsData['feedrateMax_theta'])
+
+    s["feedrateDefault"] = str(settingsData['feedrateDefault'])
+    s["rhoMax"] = str(settingsData['rhoMax'])
+    s["maxStepover"] = str(settingsData['maxStepover'])
+    s["ballSize"] = str(settingsData['ballSize'])
+    s["clearingStepover"] = str(settingsData['clearingStepover'])
+
 
     s["kp_Rho"] = str(settingsPID['kp_Rho'])
     s["ki_Rho"] = str(settingsPID['ki_Rho'])
@@ -82,7 +107,7 @@ def update_settings_save():
     print("Settings saved to file.")
 
 ################################################
-########## SETTINGS BLUE PRINT ROUTES ##########
+############### SETTINGS  ROUTES ###############
 ################################################
 @app.route("/settings")
 def settings():

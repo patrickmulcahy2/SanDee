@@ -18,6 +18,7 @@
 
     <!-- Local JS -->
     <script src="{{ url_for('static', filename='js/manualScript.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/modules/polarChart_manual.js') }}" defer></script>
 </head>
 
 <body>
@@ -27,7 +28,7 @@
             <div class="button-container">
                 <button class="button go-button" onclick="sendCommand('go')">GO</button>
                 <button class="button pause-button" onclick="sendCommand('pause')">PAUSE</button>
-                <button class="button clear-button" onclick="sendCommand('clear')">CLEAR</button>
+                <button class="button clear-button" onclick="sendCommand('clear'); clearDrawing()">CLEAR</button>
             </div>
         </div>
         
@@ -39,65 +40,55 @@
             </div>
 
             <div class="kinematic-states">
-                <h2>Kinematic States</h2>
+                <h2>Kinematic States:</h2>
                 <div class="kinematic-grid">
                     <div class="kinematic-item" id="rhoCurrPos">
-                        <strong>Rho Curr Pos</strong>
-                        <div class="non-editable-box" id="rhoCurrPosVal">0</div>
+                        <strong>Rho Curr Pos (in)</strong>
+                        <input type="text" id="rhoCurrPosVal" readonly>
                     </div>
                     <div class="kinematic-item" id="thetaPos">
-                        <strong>Theta Curr Pos</strong>
-                        <div class="non-editable-box" id="thetaCurrPosVal">0</div>
+                        <strong>Theta Curr Pos (°)</strong>
+                        <input type="text" id="thetaCurrPosVal" readonly>
                     </div>
                     <div class="kinematic-item" id="rhoReqPos">
-                        <strong>Rho Req Pos</strong>
-                        <div class="non-editable-box" id="rhoReqPosVal">0</div>
+                        <strong>Rho Req Pos (in)</strong>
+                        <input type="text" id="rhoReqPosVal" readonly>
                     </div>
                     <div class="kinematic-item" id="thetaReqPos">
-                        <strong>Theta Req Pos</strong>
-                        <div class="non-editable-box" id="thetaReqPosVal">0</div>
+                        <strong>Theta Req Pos (°)</strong>
+                        <input type="text" id="thetaReqPosVal" readonly>
                     </div>
                     <div class="kinematic-item" id="rhoError">
-                        <strong>Rho Error</strong>
-                        <div class="non-editable-box" id="rhoErrorVal">0</div>
+                        <strong>Rho Error (in)</strong>
+                        <input type="text" id="rhoErrorVal" readonly class="error-readout">
                     </div>
                     <div class="kinematic-item" id="thetaError">
-                        <strong>Theta Error</strong>
-                        <div class="non-editable-box" id="thetaErrorVal">0</div>
+                        <strong>Theta Error (°)</strong>
+                        <input type="text" id="thetaErrorVal" readonly class="error-readout">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
 
-
-
+    <!-- Sticky Status Bar -->
     <div class="state-indicators-section">
         <h2>Status Indicators</h2>
         <div class="state-indicators">
             <div class="state-item">Status Bar 
-                <div class="non-editable-box" id="triggerCountdown">{{ triggerCountdown }}</div>
-            </div>
-        </div>
-
-        <!-- Active/Stopped Indicator -->
-        <div class="centered-indicator">
-            <div class="state-item">Activity Status 
-                <div class="non-editable-box">
-                    <img id="activeStateImg" class="state-icon">
+                <div class="non-editable-box" id="status-bar">
+                    <div id="status-fill"></div>
                 </div>
             </div>
         </div>
-        
-
     </div>
 
-    <div id="tracking-circle"></div>
-
     <!-- Links to Other Pages -->
-    <a onclick="navigateWithWarning('/auto')" class="controlMode">Automatic Control</a>
-    <a onclick="navigateWithWarning('/settings')" class="settingsLink">Settings</a>
+    <a href="/" class="controlMode">Automatic Control</a>
+    <a href="/settings" class="settingsLink">Settings</a>
 
+    <div id="tracking-circle">
+        <canvas id="drawing-canvas"></canvas>
+    </div>
 </body>
 </html>

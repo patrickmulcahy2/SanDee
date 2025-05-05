@@ -39,21 +39,45 @@
                 <!-- Basic Settings -->
                 <h3>Motion Settings</h3>
                 <div class="setting-item">
-                    <label for="feedrate">Feedrate (in/s):</label>
-                    <input type="number" id="feedrate">
+                    <label for="feedrateMax">Max Feedrate (in/s):</label>
+                    <input type="number" id="feedrateMax">
                 </div>
 
+                <div class="setting-item">
+                    <label for="feedrateMax_rho">Max Rho Feedrate (in/s):</label>
+                    <input type="number" id="feedrateMax_rho">
+                </div>
+
+                <div class="setting-item">
+                    <label for="feedrateMax_theta">Max Theta Feedrate  (rpm):</label>
+                    <input type="number" id="feedrateMax_theta">
+                </div>
+
+                <div class="setting-item">
+                    <label for="feedrateDefault">Default Feedrate (in/s):</label>
+                    <input type="number" id="feedrateDefault">
+                </div>
 
                 <!-- Misc Settings -->
-                <h3>Plot Settings</h3>
+                <h3>Misc Settings</h3>
                 <div class="setting-item">
-                    <label for="plot-sample-rate">Plot Sample Rate (Hz):</label>
-                    <input type="number" id="plot-sample-rate">
+                    <label for="rhoMax">Rho Max (in):</label>
+                    <input type="number" id="rhoMax">
                 </div>
 
                 <div class="setting-item">
-                    <label for="plot-length">Plot Length (S):</label>
-                    <input type="number" id="plot-length">
+                    <label for="maxStepover">Max Stepover (in):</label>
+                    <input type="number" id="maxStepover">
+                </div>
+
+                <div class="setting-item">
+                    <label for="clearingStepover">Clearing Stepover (in):</label>
+                    <input type="number" id="clearingStepover">
+                </div>
+
+                <div class="setting-item">
+                    <label for="ballSize">Ball Diameter (in):</label>
+                    <input type="number" id="ballSize">
                 </div>
 
                     <!-- Rho Gains Section -->
@@ -86,6 +110,7 @@
                 <div class="button-container">
                     <button class="button save-button">Save</button>
                     <button class="button PID-button">Tune PID</button>
+                    <button class="button home-button">Home Motors</button>
                     <button class="button cancel-button">Cancel</button>
                 </div>
             </div>

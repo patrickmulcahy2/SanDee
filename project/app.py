@@ -5,11 +5,12 @@ from threading import Lock
 from .settings import init_settings_handlers, retrieve_settings_save
 from .utils import init_utils_handlers
 from .client_comms import init_comms_handlers
-from .background_tasks import updateData, encoderTracking, controlLoop
+from .background_tasks import updateData, encoderTracking, controlLoop, controlLED
 from .config import app, socketio
 from .control_commands import init_controlCommands_handlers
 from .manual_control import init_manualControl_handlers
-
+from .PID_tuner import init_tuner_handlers
+from .toolpath_manager import init_toolpath_handlers
 
 thread = None
 thread_lock = Lock()
@@ -19,6 +20,9 @@ init_utils_handlers()
 init_comms_handlers()
 init_controlCommands_handlers()
 init_manualControl_handlers()
+init_tuner_handlers()
+init_toolpath_handlers()
+
 
 ##############################################
 ############# CLIENT HANDLERS ################
@@ -38,6 +42,7 @@ def connect():
             thread = socketio.start_background_task(updateData)
             socketio.start_background_task(encoderTracking)
             socketio.start_background_task(controlLoop)
+            socketio.start_background_task(controlLED)
 
 @socketio.on("disconnect")
 def disconnect():
@@ -49,10 +54,10 @@ def disconnect():
 #####################################
 ########## CONTROL ROUTES ###########
 #####################################
-@app.route('/auto')
+@app.route('/')
 def automatedControl():
     return render_template('automatedControl.html')
 
-@app.route('/')
+@app.route('/manual')
 def manualControl():
     return render_template('manualControl.html')

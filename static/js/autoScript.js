@@ -1,20 +1,9 @@
 var socket = io.connect(location.protocol + "//" + document.domain + ":" + location.port);
 
+
 socket.on("updateInputs", function (data){
     document.getElementById("feedrateOffset").value = data.userInputs.feedrateOffset || 0
     document.getElementById("feedrate").value = data.userInputs.feedrate || 0
-
-});
-
-socket.on("updatePosition", function (data){
-    document.getElementById("rhoCurrPosVal").value = Number(data.currPosition.rhoCurr).toFixed(3) || 0;
-    document.getElementById("thetaCurrPosVal").value = Number(data.currPosition.thetaCurr).toFixed(1) || 0;
-
-    document.getElementById("rhoReqPosVal").value = Number(data.reqPosition.rhoReq).toFixed(3) || 0;
-    document.getElementById("thetaReqPosVal").value = Number(data.reqPosition.thetaReq).toFixed(1) || 0;
-
-    document.getElementById("rhoErrorVal").value = Number(data.currPosition.rhoCurr - data.reqPosition.rhoReq).toFixed(3) || 0
-    document.getElementById("thetaErrorVal").value = Number(data.currPosition.thetaCurr - data.reqPosition.thetaReq).toFixed(1) || 0
 
 });
 
@@ -24,8 +13,15 @@ socket.on("statusPercent", percent => {
     document.getElementById("status-fill").style.width = clampedPercent + "%";
 });
 
-function sendCommand(command){
-    socket.emit(command)
+function sendCommand(command) {
+    if (command === "go") {
+        const dropdown = document.getElementById("toolpath-dropdown");
+        if (!dropdown || dropdown.selectedIndex <= 0) {
+            alert("No toolpath selected!");
+            return;
+        }
+    }
+    socket.emit(command);
 }
 
 socket.on("systemStates", ({ pauseStatus, patterningStatus, clearingStatus }) => {
@@ -41,7 +37,6 @@ socket.on("systemStates", ({ pauseStatus, patterningStatus, clearingStatus }) =>
         goBtn.textContent = "GO";
         pauseBtn.textContent = "PAUSE";
     }
-
 
 
     // Disable buttons based on state 
