@@ -1,5 +1,7 @@
 var socket = io.connect(location.protocol + "//" + document.domain + ":" + location.port);
 
+pauseStatus_save = false;
+
 socket.on("updateInputs", function (data){
     document.getElementById("feedrateOffset").value = data.userInputs.feedrateOffset || 0
     document.getElementById("feedrate").value = data.userInputs.feedrate || 0
@@ -24,14 +26,25 @@ socket.on("statusPercent", percent => {
     document.getElementById("status-fill").style.width = clampedPercent + "%";
 });
 
-function sendCommand(command){
-    socket.emit(command)
+function sendCommand(command) {
+    if (command === "go") {
+        const dropdown = document.getElementById("toolpath-dropdown");
+        if (!pauseStatus_save){
+            if (!dropdown || dropdown.selectedIndex <= 0) {
+                alert("No toolpath selected!");
+                return;
+            }
+        }
+    }
+    socket.emit(command);
 }
 
 socket.on("systemStates", ({ pauseStatus, patterningStatus, clearingStatus }) => {
     const goBtn = document.querySelector(".go-button");
     const pauseBtn = document.querySelector(".pause-button");
     const clearBtn = document.querySelector(".clear-button");
+
+    pauseStatus_save = pauseStatus;
 
     // Update button text for pause state
     if (pauseStatus) {

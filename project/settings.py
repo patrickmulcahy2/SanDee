@@ -5,7 +5,6 @@ import subprocess
 from flask import render_template, request, redirect, url_for, session, jsonify
 
 from .config import settingsData, settingsPID, app, socketio
-from .client_comms import update_client
 from .hardware_center import home_motors
 
 # Create a config parser instance
@@ -30,6 +29,7 @@ def init_settings_handlers():
         settingsData['maxStepover'] = float(data.get("maxStepover", 8))
         settingsData['ballSize'] = float(data.get("ballSize", 8))
         settingsData['clearingStepover'] = float(data.get("clearingStepover", 8))
+        settingsData['clearingType'] = (data.get("clearingType", "spiral"))
 
         settingsPID['kp_Rho'] = float(data.get("kp_Rho", 1.00 ))
         settingsPID['ki_Rho'] = float(data.get("ki_Rho", 0.10))
@@ -67,6 +67,7 @@ def retrieve_settings_save():
         settingsData['maxStepover'] = float(s.get("maxStepover", 8))
         settingsData['ballSize'] = float(s.get("ballSize", 8))
         settingsData['clearingStepover'] = float(s.get("clearingStepover", 8))
+        settingsData['clearingType'] = (s.get("clearingType", "spiral"))
 
 
         settingsPID['kp_Rho'] = float(s.get("kp_Rho", 1.00 ))
@@ -93,6 +94,7 @@ def update_settings_save():
     s["maxStepover"] = str(settingsData['maxStepover'])
     s["ballSize"] = str(settingsData['ballSize'])
     s["clearingStepover"] = str(settingsData['clearingStepover'])
+    s["clearingType"] = str(settingsData['clearingType'])
 
 
     s["kp_Rho"] = str(settingsPID['kp_Rho'])

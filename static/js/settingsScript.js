@@ -5,66 +5,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const settingsData = window.settingsData || {};
     const settingsPID = window.settingsPID || {};
 
-    // Populate form fields
-    if (settingsData.feedrateMax !== undefined) {
-        document.getElementById("feedrateMax").value = settingsData.feedrateMax;
+
+
+// Helper to assign values if they exist
+const assignValueIfExists = (id, value) => {
+    if (value !== undefined && document.getElementById(id)) {
+        document.getElementById(id).value = value;
     }
+};
 
-    if (settingsData.feedrateMax_rho !== undefined) {
-        document.getElementById("feedrateMax_rho").value = settingsData.feedrateMax_rho;
-    }
+// Populate form fields from settingsData
+[
+    ["feedrateMax", settingsData.feedrateMax],
+    ["feedrateMax_rho", settingsData.feedrateMax_rho],
+    ["feedrateMax_theta", settingsData.feedrateMax_theta],
+    ["feedrateDefault", settingsData.feedrateDefault],
+    ["rhoMax", settingsData.rhoMax],
+    ["maxStepover", settingsData.maxStepover],
+    ["ballSize", settingsData.ballSize],
+    ["clearingStepover", settingsData.clearingStepover],
+    ["clearingType", settingsData.clearingType],
+].forEach(([id, value]) => assignValueIfExists(id, value));
 
-    if (settingsData.feedrateMax_theta !== undefined) {
-        document.getElementById("feedrateMax_theta").value = settingsData.feedrateMax_theta;
-    }
+// Populate PID gains from settingsPID
+[
+    ["kp-rho", settingsPID.kp_Rho],
+    ["ki-rho", settingsPID.ki_Rho],
+    ["kd-rho", settingsPID.kd_Rho],
+    ["kp-theta", settingsPID.kp_Theta],
+    ["ki-theta", settingsPID.ki_Theta],
+    ["kd-theta", settingsPID.kd_Theta],
+].forEach(([id, value]) => assignValueIfExists(id, value));
 
-    if (settingsData.feedrateDefault !== undefined) {
-        document.getElementById("feedrateDefault").value = settingsData.feedrateDefault;
-    }
-
-    if (settingsData.rhoMax !== undefined) {
-        document.getElementById("rhoMax").value = settingsData.rhoMax;
-    }
-
-    if (settingsData.maxStepover !== undefined) {
-        document.getElementById("maxStepover").value = settingsData.maxStepover;
-    }
-
-    if (settingsData.ballSize !== undefined) {
-        document.getElementById("ballSize").value = settingsData.ballSize;
-    }
-
-    if (settingsData.clearingStepover !== undefined) {
-        document.getElementById("clearingStepover").value = settingsData.clearingStepover;
-    }
-
-
-
-    //Rho Gains
-    if (settingsPID.kp_Rho !== undefined) {
-        document.getElementById("kp-rho").value = settingsPID.kp_Rho;
-    }
-
-    if (settingsPID.ki_Rho !== undefined) {
-        document.getElementById("ki-rho").value = settingsPID.ki_Rho;
-    }
-
-    if (settingsPID.kd_Rho !== undefined) {
-        document.getElementById("kd-rho").value = settingsPID.kd_Rho;
-    }
-
-    //Theta  Gains
-    if (settingsPID.kp_Theta !== undefined) {
-        document.getElementById("kp-theta").value = settingsPID.kp_Theta;
-    }
-
-    if (settingsPID.ki_Theta !== undefined) {
-        document.getElementById("ki-theta").value = settingsPID.ki_Theta;
-    }
-
-    if (settingsPID.kd_Theta !== undefined) {
-        document.getElementById("kd-theta").value = settingsPID.kd_Theta;
-    }
 
 
     // Cancel button can optionally reset the form or navigate
@@ -80,41 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
         socket.emit("homeMotors")
     });
 
-    window.reboot = function(command) {
+    window.reboot = function() {
         const proceed = confirm("⚠️ Warning: Do you wish to reboot the control system?");
         if (!proceed) return
 
         socket.emit("reboot");
     }
 
-
-    if (settingsData.feedrateMax_rho !== undefined) {
-        document.getElementById("feedrateMax_rho").value = settingsData.feedrateMax_rho;
-    }
-
-    if (settingsData.feedrateMax_theta !== undefined) {
-        document.getElementById("feedrateMax_theta").value = settingsData.feedrateMax_theta;
-    }
-
-    if (settingsData.feedrateDefault !== undefined) {
-        document.getElementById("feedrateDefault").value = settingsData.feedrateDefault;
-    }
-
-    if (settingsData.rhoMax !== undefined) {
-        document.getElementById("rhoMax").value = settingsData.rhoMax;
-    }
-
-    if (settingsData.maxStepover !== undefined) {
-        document.getElementById("maxStepover").value = settingsData.maxStepover;
-    }
-
-    if (settingsData.ballSize !== undefined) {
-        document.getElementById("ballSize").value = settingsData.ballSize;
-    }
-
-    if (settingsData.clearingStepover !== undefined) {
-        document.getElementById("clearingStepover").value = settingsData.clearingStepover;
-    }
 
     // Save button handler
     document.querySelector(".save-button").addEventListener("click", () => {
@@ -127,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
             maxStepover: parseFloat(document.getElementById("maxStepover").value),
             ballSize: parseFloat(document.getElementById("ballSize").value),
             clearingStepover: parseFloat(document.getElementById("clearingStepover").value),
-
+            clearingType: document.getElementById("clearingType").value,
 
             kp_Rho: parseFloat(document.getElementById("kp-rho").value),
             ki_Rho: parseFloat(document.getElementById("ki-rho").value),

@@ -99,6 +99,7 @@ settingsData = {
     'rhoMax': 8,                #Rho arm length
     'maxStepover': 0.125,       #Max position change stepover
     'clearingStepover': 0.125,  #Max position change stepover
+    'clearingType': "Spiral",   #Shape of clearing path
     'ballSize': 1,              #Diameter of driving ball in inches
 }
 

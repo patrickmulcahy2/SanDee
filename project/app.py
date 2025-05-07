@@ -11,6 +11,7 @@ from .control_commands import init_controlCommands_handlers
 from .manual_control import init_manualControl_handlers
 from .PID_tuner import init_tuner_handlers
 from .toolpath_manager import init_toolpath_handlers
+from .toolpath_creator import init_toolpathCreator_handlers
 
 thread = None
 thread_lock = Lock()
@@ -22,6 +23,7 @@ init_controlCommands_handlers()
 init_manualControl_handlers()
 init_tuner_handlers()
 init_toolpath_handlers()
+init_toolpathCreator_handlers()
 
 
 ##############################################

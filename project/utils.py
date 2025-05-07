@@ -43,6 +43,9 @@ def cartesian_to_polar(x, y):
 	theta = math.degrees(thetaRads)
 	return rho, theta
 
+def circle_height_to_width(radius, height):
+	width = 2*math.sqrt(radius**2 - height**2)
+	return width
 
 def calculateParameters(newPos, moveMagnitude_adj, posData):
     startPos = newPos - moveMagnitude_adj

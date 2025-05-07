@@ -18,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Local JS -->
-    <script src="{{ url_for('static', filename='js/settingsScript.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/wifisettingsScript.js') }}" defer></script>
 
     <!-- Pass settings data to JS -->
     <script>
@@ -102,19 +102,6 @@
                     </div>
                 </div>
 
-                    <!-- Theta Gains Section -->
-                <div class="setting-item">
-                    <label>Theta Gains Settings:</label>
-                    <div style="display: flex; align-items: center; gap: 5px;">
-                        <span>Kp =</span>
-                        <input type="number" id="kp-theta" style="width: 100px;">
-                        <span>Ki = </span>
-                        <input type="number" id="ki-theta" style="width: 100px;">
-                        <span>Kd = </span>
-                        <input type="number" id="kd-theta" style="width: 100px;">
-                    </div>
-                </div>
-
                 <!-- Buttons -->
                 <div class="button-container">
                     <button class="button save-button">Save</button>
@@ -129,7 +116,7 @@
             <div class="nav-links">
                 <a class="pageLink" href="/">Control</a>
                 <a class="pageLink" onclick="reboot()" target="_blank" rel="noopener noreferrer">Reboot</a>
-                <!-- <a class="pageLink" href="/wifi-settings">Wifi Settings</a> -->
+                <a class="pageLink" href="/settings">Settings</a>
             </div>
         </div>
     </div>

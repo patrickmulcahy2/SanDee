@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleControl.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleToolpath.css') }}">
+
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.svg') }}">
+
+    <!-- External JS Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Local JS -->
+    <script src="{{ url_for('static', filename='js/toolpath_creatorScript.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/modules/polarChart_creator.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/modules/toolpathSelector.js') }}" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <img src="/static/images/logo.png" alt="Logo" class="logo">
+        </div>
+        
+        <div class="right-panel">
+            <h2>User Inputs:</h2>
+            <h3>Select Toolpath:</h3>
+            <select id="toolpath-dropdown" class="dropdown">
+                <option disabled selected>Loading options...</option>
+            </select>
+            <button id="delete-toolpath" class="delete-button">✕</button>
+
+            <div id="image-box-container">
+                <img id="toolpath-image" src="" alt="Toolpath Preview" class="toolpath-image" style="display: none; max-width: 100%; margin-top: 10px;">
+            </div>
+
+            <h3>Upload Toolpath (.TP):</h3>
+            <form id="upload-form" action="/upload_toolpath" method="post" enctype="multipart/form-data" style="margin-bottom: 20px;">
+                <input type="file" name="file" accept=".TP" required>
+                <button type="submit" class="small-button" style="margin-top: 10px;">Upload</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Links to Other Pages -->
+    <a href="/" class="controlMode">Automatic Control</a>
+    <a href="/settings" class="settingsLink">Settings</a>
+
+    <div style="display: flex; align-items: center; justify-content: center; margin-top: 20px;">
+        <div id="tracking-circle" style="flex: 1; max-width: 600px;">
+            <canvas id="drawing-canvas" style="width: 100%; height: 100%;"></canvas>
+        </div>
+        <button id="clear-canvas" class="small-button" style="margin-left: 15px;">Clear</button>
+    </div>
+
+    <div id="canvas-controls" style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center;">
+        <label for="multiply-input">Multiply:</label>
+        <input type="number" id="multiply-input" min="1" step="1" value="1" class="small-input">
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <label for="mirror-x">X Mirror</label>
+            <div id="mirror-x" class="toggle-box">Off</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <label for="mirror-y">Y Mirror</label>
+            <div id="mirror-y" class="toggle-box">Off</div>
+        </div>
+
+        <!-- Smoothing slider on second row -->
+        <div style="flex-basis: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <label for="smoothing-slider">Smoothing:</label>
+            <input type="range" id="smoothing-slider" min="0" max="100" value="0">
+        </div>
+
+        <label for="snap-label">Snap to:</label>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <label for="rho-start-toggle">Path Start</label>
+            <div id="rho-start-toggle" class="toggle-box">Origin</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <label for="rho-end-toggle">Path End</label>
+            <div id="rho-end-toggle" class="toggle-box">0</div>
+        </div>
+
+        <!-- Save button on its own row -->
+        <div style="flex-basis: 100%; display: flex; justify-content: center;">
+            <button id="save-canvas" class="small-button">Save Canvas</button>
+        </div>
+    </div>
+
+</body>
+</html>

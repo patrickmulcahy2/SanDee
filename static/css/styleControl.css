@@ -152,7 +152,23 @@ input[type="number"] {
     background: rgba(0, 0, 0, 0.9);
 }
 
+.toolpathCreatorLink {
+    position: fixed;
+    bottom: 10px;
+    right: 235px;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    z-index:999;
+}
 
+.toolpathCreatorLink:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
 
 .settingsLink {
     position: fixed;

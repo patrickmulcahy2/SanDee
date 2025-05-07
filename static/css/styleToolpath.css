@@ -1,0 +1,62 @@
+#canvas-controls {
+    text-align: center;
+    margin-bottom:50px;
+}
+
+#canvas-controls .small-button {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+#canvas-controls .small-input {
+    width: 60px;
+    padding: 4px;
+    font-size: 0.9rem;
+}
+
+.toggle-box {
+    width: 50px;
+    height: 30px;
+    border: 2px solid #444;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+    background-color: #eee;
+}
+
+.toggle-box.active {
+    background-color: #cfc;
+    border-color: #2a2;
+}
+
+.custom-dropdown {
+    border: 1px solid #ccc;
+    padding: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+}
+
+.toolpath-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.toolpath-item:hover {
+    background-color: #f0f0f0;
+}
+
+.delete-btn {
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+}

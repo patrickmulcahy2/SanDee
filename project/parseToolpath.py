@@ -44,10 +44,23 @@ def follow_path(toolpath_filepath):
     system_states.clearingStatus = False
     completion_flash() 
 
+def feedrate_pauser(delta_rho, delta_theta, step_size):
+    feedrate = userInputs["feedrate"]
+    feedrateMax_rho = settingsData["feedrateMax_rho"]        #inches per second
+    feedrateMax_theta = settingsData["feedrateMax_theta"]* 360 / 60 #degrees per second
+
+    # Time needed to stay within each feedrate limit
+    time_rho = delta_rho / feedrateMax_rho if feedrateMax_rho else 0
+    time_theta = delta_theta / feedrateMax_theta if feedrateMax_theta else 0 
+    time_vector = step_size / feedrate if feedrate else 0
+
+    # Choose the maximum required time to respect all limits
+    sleep_time = max(time_vector, time_rho, time_theta)
+    socketio.sleep(sleep_time)
 
 def check_pause():
     while system_states.pauseStatus:
-        socketio.sleep(0.1)
+        socketio.sleep(0.25)
 
 def check_cancel():
     if not system_states.clearingStatus and not system_states.patterningStatus:
@@ -59,9 +72,6 @@ def check_cancel():
 
 def move_straight(start, end):
     step_size = settingsData["maxStepover"]
-    feedrate = userInputs["feedrate"]
-    feedrateMax_rho = settingsData["feedrateMax_rho"]
-    feedrateMax_theta = settingsData["feedrateMax_theta"]
 
     x0, y0 = polar_to_cartesian(start["rho"], start["theta"])
     x1, y1 = polar_to_cartesian(end["rho"], end["theta"])
@@ -83,15 +93,7 @@ def move_straight(start, end):
         reqPosition["rhoReq"] = rho
         reqPosition["thetaReq"] = theta
 
-        # Time needed to stay within each feedrate limit
-        time_rho = delta_rho / feedrateMax_rho if feedrateMax_rho else 0
-        time_theta = delta_theta / feedrateMax_theta if feedrateMax_theta else 0
-        time_vector = step_size / feedrate if feedrate else 0
-
-        # Choose the maximum required time to respect all limits
-        sleep_time = max(time_vector, time_rho, time_theta)
-
-        socketio.sleep(sleep_time)
+        feedrate_pauser(delta_rho, delta_theta, step_size)
 
     # Snap to endpoint
     reqPosition["rhoReq"] = end["rho"]
@@ -102,9 +104,6 @@ def angular_diff(a1, a2):
 
 def move_arc(start, end, radius, direction):
     step_size = settingsData["maxStepover"]
-    feedrate = userInputs["feedrate"]
-    feedrateMax_rho = settingsData["feedrateMax_rho"]
-    feedrateMax_theta = settingsData["feedrateMax_theta"]
 
     x0, y0 = polar_to_cartesian(start["rho"], start["theta"])
     x1, y1 = polar_to_cartesian(end["rho"], end["theta"])
@@ -160,16 +159,11 @@ def move_arc(start, end, radius, direction):
         reqPosition["rhoReq"] = rho
         reqPosition["thetaReq"] = theta
 
-        # Time needed to stay within each feedrate limit
-        time_rho = delta_rho / feedrateMax_rho if feedrateMax_rho else 0
-        time_theta = delta_theta / feedrateMax_theta if feedrateMax_theta else 0
-        time_vector = step_size / feedrate if feedrate else 0
-
-        # Choose the maximum required time to respect all limits
-        sleep_time = max(time_vector, time_rho, time_theta)
-
-        socketio.sleep(sleep_time)
+        feedrate_pauser(delta_rho, delta_theta, step_size)
 
     # Snap to endpoint
     reqPosition["rhoReq"] = end["rho"]
     reqPosition["thetaReq"] = end["theta"]
+
+
+
