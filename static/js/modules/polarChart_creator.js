@@ -8,26 +8,55 @@ const ctx = canvas.getContext('2d');
 let canDraw = true;
 let lastSystemState = { pauseStatus: false, patterningStatus: false, clearingStatus: false };
 
+let showLines = false;
+
 function drawCenterCross() {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const size = 10;
 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Central blue cross
     ctx.strokeStyle = 'blue';
     ctx.lineWidth = 1;
 
-    // Horizontal line
+    // Solid center cross
     ctx.beginPath();
     ctx.moveTo(centerX - size, centerY);
     ctx.lineTo(centerX + size, centerY);
     ctx.stroke();
 
-    // Vertical line
     ctx.beginPath();
     ctx.moveTo(centerX, centerY - size);
     ctx.lineTo(centerX, centerY + size);
     ctx.stroke();
+
+    if (showLines) {
+        // Dotted horizontal and vertical lines
+        ctx.strokeStyle = 'blue';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 5]); // Dotted style
+
+        // Horizontal line
+        ctx.beginPath();
+        ctx.moveTo(0, centerY);
+        ctx.lineTo(canvas.width, centerY);
+        ctx.stroke();
+
+        // Vertical line
+        ctx.beginPath();
+        ctx.moveTo(centerX, 0);
+        ctx.lineTo(centerX, canvas.height);
+        ctx.stroke();
+
+        ctx.setLineDash([]); // Reset to solid
+    }
 }
+document.getElementById('show-lines-checkbox').addEventListener('change', function () {
+    showLines = this.checked;
+    drawCenterCross();
+});
 
 // Resize canvas
 function resizeCanvas() {
@@ -40,7 +69,6 @@ function resizeCanvas() {
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
-
 
 // Create red dot cursor
 const redDot = document.createElement('div');
