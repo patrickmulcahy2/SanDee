@@ -24,6 +24,19 @@ cd ~/SanDee
 sudo pip3 install --break-system-packages -r requirements.txt
 
 
+### make ./updateRun.sh shell
+cd ~
+nano updateRun.sh
+
+Add:
+cd ~
+nano updateRun.sh
+git clone https://github.com/patrickmulcahy2/SanDee
+
+Run:
+chmod +x updateRun.sh
+
+
 ### Enable I2C
 sudo raspi-config
 --> Interfaces 

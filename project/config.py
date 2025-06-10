@@ -37,19 +37,19 @@ class ledColors:
         self.b = 0
 LED_color = ledColors()
 
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 IO_pins = {
-    "rho_pos": 12,
-    "rho_neg": 32,
-    "theta_neg": 33,
-    "theta_pos": 35,
-    "encoder_rho_A": 26,
-    "encoder_rho_B": 36,
-    "encoder_theta_A": 38,
-    "encoder_theta_B": 40,
-    "LED_pin": 18,   #THIS IS BCM 18 Board 18
+    "rho_pos": 18,
+    "rho_neg": 12,
+    "theta_neg": 16,
+    "theta_pos": 19,
+    "encoder_rho_A": 23,
+    "encoder_rho_B": 16,
+    "encoder_theta_A": 20,
+    "encoder_theta_B": 21,
+    "LED_pin": 24,
 }
 
 
