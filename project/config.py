@@ -43,7 +43,7 @@ GPIO.setwarnings(False)
 IO_pins = {
     "rho_pos": 18,
     "rho_neg": 12,
-    "theta_neg": 16,
+    "theta_neg": 13,
     "theta_pos": 19,
     "encoder_rho_A": 23,
     "encoder_rho_B": 16,

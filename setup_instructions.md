@@ -32,6 +32,7 @@ Add:
 cd ~
 nano updateRun.sh
 git clone https://github.com/patrickmulcahy2/SanDee
+python ~/SanDee/run.py
 
 Run:
 chmod +x updateRun.sh
