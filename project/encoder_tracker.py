@@ -8,6 +8,7 @@ import time
 class Encoder:
     def __init__(self, pin_a, pin_b):
         # Initialize GPIO settings
+        GPIO.setmode(GPIO.BCM)
         self.pin_a = pin_a
         self.pin_b = pin_b
 
