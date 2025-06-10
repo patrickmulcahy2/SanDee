@@ -2,11 +2,11 @@ from flask import Flask, render_template, request, Response, send_from_directory
 import threading 
 from threading import Lock
 
+from .config import app, socketio
 from .settings import init_settings_handlers, retrieve_settings_save
 from .utils import init_utils_handlers
 from .client_comms import init_comms_handlers
 from .background_tasks import updateData, encoderTracking, controlLoop, controlLED
-from .config import app, socketio
 from .control_commands import init_controlCommands_handlers
 from .manual_control import init_manualControl_handlers
 from .PID_tuner import init_tuner_handlers

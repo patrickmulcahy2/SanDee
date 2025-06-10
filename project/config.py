@@ -63,6 +63,7 @@ GPIO.setup(IO_pins["encoder_rho_B"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(IO_pins["encoder_theta_A"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(IO_pins["encoder_theta_B"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+
 # Initialize GPIO states
 PWM_freq = 1000 # 1000 Hz frequency
 rhoPos = GPIO.PWM(IO_pins["rho_pos"], PWM_freq)  
