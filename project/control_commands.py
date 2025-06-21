@@ -1,6 +1,5 @@
 import os
 
-
 from .config import app, socketio, system_states, userInputs, BASE_DIR
 from .clearTable import clearTable
 from .parseToolpath import follow_path

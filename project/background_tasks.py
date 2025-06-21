@@ -1,11 +1,6 @@
 import threading
 from threading import Lock
 
-try:
-    import RPi.GPIO as GPIO
-except (ImportError, RuntimeError):
-    from mock.RPi import GPIO
-
 import time
 
 

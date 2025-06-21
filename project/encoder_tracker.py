@@ -1,52 +1,52 @@
-try:
-    import RPi.GPIO as GPIO
-except (ImportError, RuntimeError):
-    from mock.RPi import GPIO
-
+import lgpio
 import time
 
 class Encoder:
-    def __init__(self, pin_a, pin_b):
-        # Initialize GPIO settings
-        GPIO.setmode(GPIO.BCM)
+    def __init__(self, chip, pin_a, pin_b):
+        self.chip = chip
         self.pin_a = pin_a
         self.pin_b = pin_b
+
+        # Request input lines
+        self.chip.claim_input(self.pin_a)
+        self.chip.claim_input(self.pin_b)
 
         # Encoder state tracking
         self.position = 0
         self.last_position = 0
-        
-        self.last_a = GPIO.input(self.pin_a)
-        self.last_b = GPIO.input(self.pin_b)
-
+        self.last_a = self.chip.read(self.pin_a)
+        self.last_b = self.chip.read(self.pin_b)
         self.last_time = time.time()
         self.angular_velocity = 0
 
-        # Interrupts for encoder signal changes
-        GPIO.add_event_detect(self.pin_a, GPIO.BOTH, callback=self.update_position)
-        GPIO.add_event_detect(self.pin_b, GPIO.BOTH, callback=self.update_position)
+        # Set up watchers
+        self.watcher = lgpio.watcher()
+        self.watcher.add(self.chip, self.pin_a, lgpio.BOTH_EDGES)
+        self.watcher.add(self.chip, self.pin_b, lgpio.BOTH_EDGES)
 
-    def update_position(self, channel):
-        # Read current states of the encoder signals
-        a_state = GPIO.input(self.pin_a)
-        b_state = GPIO.input(self.pin_b)
+    def poll(self):
+        # Call this in your loop to check for events
+        for event in self.watcher:
+            if event[1] == self.pin_a or event[1] == self.pin_b:
+                self.update_position()
 
-        # Determine direction based on A and B signal states
+    def update_position(self):
+        a_state = self.chip.read(self.pin_a)
+        b_state = self.chip.read(self.pin_b)
+
         if a_state != self.last_a:
             if b_state != a_state:
                 self.position += 1  # Clockwise
             else:
                 self.position -= 1  # Counter-clockwise
 
-        # Update previous states
         self.last_a = a_state
         self.last_b = b_state
 
-        # Calculate angular velocity
         current_time = time.time()
-        dT = current_time - self.last_time  # Time difference
+        dT = current_time - self.last_time
         if dT > 0:
-            self.angular_velocity = (self.position - self.last_position) / dT  # Position change over time
+            self.angular_velocity = (self.position - self.last_position) / dT
         self.last_time = current_time
         self.last_position = self.position
 
@@ -58,10 +58,7 @@ class Encoder:
 
     def reset_position(self):
         self.position = 0
-        self.angular_velocity = 0  # Reset velocity when position is reset
+        self.angular_velocity = 0
 
     def cleanup(self):
-        # Clean up GPIO settings
-        GPIO.remove_event_detect(self.pin_a)
-        GPIO.remove_event_detect(self.pin_b)
-        GPIO.cleanup()
+        self.watcher.close()
